@@ -1,8 +1,153 @@
 .mainContainer {
   display: flex;
+  justify-content: space-between;
+  height: 100vh;
+  width: 100%;
+  font-family: var(--regularFont);
 }
 
 .img {
   height: 12rem;
   width: auto;
+}
+
+.banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  margin: 1rem;
+  border: 1px solid var(--black);
+  border-radius: 20px;
+}
+
+.mainHeader {
+  font-family: var(--headingFont);
+  font-size: 2rem;
+  color: var(--darkgray);
+  margin: 1.25rem 0;
+}
+
+.formContainer {
+  min-width: 20rem;
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem;
+}
+
+.inputField {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.inputField > label {
+  width: 10rem;
+  height: 1.5rem;
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
+}
+
+.inputField > input {
+  width: 8rem;
+  font-size: 0.9rem;
+  color: var(--darkgray);
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--darkgray);
+  border-radius: 10px;
+  outline: none;
+}
+
+.buttonAndFormWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper {
+  width: 8rem;
+  border-bottom: 1px solid var(--black);
+  margin: 1rem 0 0.5rem 0;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdownContent {
+  display: none;
+  position: absolute;
+}
+
+.dropdownContentActive {
+  display: block;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 6.2rem;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.911);
+  z-index: 1;
+}
+
+.dropdownContentActive p {
+  font-size: 0.9rem;
+  color: rgba(0, 0, 0, 0.973);
+  padding: 0.5rem;
+  text-decoration: none;
+}
+
+.dropdownContentActive p:hover {
+  cursor: pointer;
+  background-color: #f1f1f1;
+}
+
+.dropdown:active .dropbtn {
+  transition-duration: 0.2s;
+  transform: translate(0.1rem, 0.05rem);
+  background: #f8f8f8;
+}
+
+.dropbtn {
+  border: none;
+  padding: 0.6rem 0.8rem;
+  background: var(--offwhite);
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  min-width: 20rem;
+  margin-bottom: 1rem;
+}
+
+.dropbtn:focus {
+  outline: none;
+}
+
+.title {
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.dropIcon {
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+}
+
+.dropdownContent .active {
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--offwhite);
+}
+
+.dropdownContent .active:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.unit {
+  font-size: 0.9rem;
+  margin-left: 0.25rem;
+  color: var(--midgray);
+}
+
+@media (max-width: 1200px) {
+  .mainContainer {
+    flex-direction: column;
+  }
 }
