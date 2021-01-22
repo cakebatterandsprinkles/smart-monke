@@ -8,7 +8,7 @@ module.exports = {
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
   ],
   rules: {
-    "max-lines": "error",
+    // "max-lines": "error",
     "no-nested-ternary": "error",
     "no-unneeded-ternary": "error",
     eqeqeq: "error",

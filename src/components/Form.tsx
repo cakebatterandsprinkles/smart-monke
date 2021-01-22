@@ -10,6 +10,8 @@ const Form: FunctionComponent = () => {
   const [salesTaxBuy, setSalesTaxBuy] = useState<number>();
   const [upfrontCosts, setUpfrontCosts] = useState<number>();
   const [totalCashCost, setTotalCashCost] = useState<number>();
+  const [loanInterest, setLoanInterest] = useState<number>();
+  const [loanDuration, setLoanDuration] = useState<number>();
   const [monthlyLeasePrice, setMonthlyLeasePrice] = useState<number>();
   const [salesTaxLease, setSalesTaxLease] = useState<number>();
   const [leaseDuration, setLeaseDuration] = useState<number>();
@@ -26,12 +28,22 @@ const Form: FunctionComponent = () => {
     // but once current exists, it is of type HTMLInputElement, thus it
     // has the method focus! ✅
     e.preventDefault();
-    console.group("BUY");
-    console.log("Sales Price: $", salesPrice?.toLocaleString());
-    console.log("Sales Tax:", salesTaxBuy, "%");
-    console.log("Upfront Costs: $", upfrontCosts?.toLocaleString());
-    console.log("TOTAL CASH COST: $", totalCashCost?.toLocaleString());
-    console.groupEnd();
+    if (paymentMethod === "Cash") {
+      console.group("BUY- Cash");
+      console.log("Sales Price: $", salesPrice?.toLocaleString());
+      console.log("Sales Tax:", salesTaxBuy, "%");
+      console.log("Upfront Costs: $", upfrontCosts?.toLocaleString());
+      console.log("TOTAL CASH COST: $", totalCashCost?.toLocaleString());
+      console.groupEnd();
+    }
+    if (paymentMethod === "Loan") {
+      console.group("BUY- Loan");
+      console.log("Sales Price: $", salesPrice?.toLocaleString());
+      console.log("Sales Tax:", salesTaxBuy, "%");
+      console.log("Upfront Costs: $", upfrontCosts?.toLocaleString());
+      console.log("TOTAL CASH COST: $", totalCashCost?.toLocaleString());
+      console.groupEnd();
+    }
     console.group("LEASE");
     console.log("Monthly Lease Price: $ ", salesTaxBuy?.toLocaleString());
     console.log("Sales Tax: %", salesTaxLease);
@@ -122,11 +134,29 @@ const Form: FunctionComponent = () => {
       <div>
         <div className={styles.inputField}>
           <label htmlFor="loanInterest">Loan Interest:</label>
-          <input id="loanInterest" name="loanInterest" type="number" />
+          <NumberFormat
+            decimalScale={2}
+            name="loanInterest"
+            onValueChange={(values): void => {
+              setLoanInterest(values.floatValue);
+            }}
+            prefix="$"
+            thousandSeparator={true}
+            value={loanInterest}
+          />{" "}
         </div>
         <div className={styles.inputField}>
           <label htmlFor="loanDuration">Loan Duration:</label>
-          <input id="loanDuration" name="loanDuration" type="number" />
+          <NumberFormat
+            decimalScale={2}
+            name="loanDuration"
+            onValueChange={(values): void => {
+              setLoanDuration(values.floatValue);
+            }}
+            suffix=" months"
+            thousandSeparator={true}
+            value={loanDuration}
+          />{" "}
         </div>
       </div>
     );
