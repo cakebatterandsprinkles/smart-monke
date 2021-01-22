@@ -1,27 +1,56 @@
-import type { FC } from "react";
-import { useForm } from "react-hook-form";
+import type { FunctionComponent } from "react";
+import { useRef } from "react";
+import Mascot from "../images/IMG_0405.png";
+import styles from "./Form.module.css";
 
-interface FormData {
-  name: string;
-  age: number;
-}
+const Form: FunctionComponent = () => {
+  const inputEl = useRef<HTMLInputElement>(null);
 
-const Form: FC = () => {
-  // eslint-disable-next-line @typescript-eslint/unbound-method
-  const { register, handleSubmit, errors } = useForm<FormData>();
-
-  const onSubmit = (data: FormData): void => {
-    console.log(data);
+  const handleSubmit = (): void => {
+    // strict null checks need us to check if inputEl and current exist.
+    // but once current exists, it is of type HTMLInputElement, thus it
+    // has the method focus! ✅
+    console.log(inputEl.current);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input defaultValue="test" name="name" ref={register} />
-
-      <input name="age" ref={register({ required: true })} type="number" />
-      {errors.age && <span>This field is required</span>}
-
-      <input type="submit" />
+    <form>
+      <div className={styles.mainContainer}>
+        <div>
+          <div className={styles.field}>
+            <label htmlFor="name">Name</label>
+            <input id="name" name="name" ref={inputEl} type="text" />
+          </div>
+          <div className={styles.field}>
+            <label htmlFor="email">Email</label>
+            <input id="email" name="email" type="email" />
+          </div>
+          <div className={styles.field}>
+            <label htmlFor="score">Score</label>
+            <input id="score" name="score" type="number" />
+          </div>
+        </div>
+        <img alt="mascot" className={styles.img} src={Mascot} />
+        <div>
+          <div className={styles.field}>
+            <label htmlFor="name">Name</label>
+            <input id="name" name="name" type="text" />
+          </div>
+          <div className={styles.field}>
+            <label htmlFor="email">Email</label>
+            <input id="email" name="email" type="email" />
+          </div>
+          <div className={styles.field}>
+            <label htmlFor="score">Score</label>
+            <input id="score" name="score" type="number" />
+          </div>
+        </div>
+        <div>
+          <button onSubmit={handleSubmit} type="submit">
+            Submit
+          </button>
+        </div>
+      </div>
     </form>
   );
 };

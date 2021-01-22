@@ -1,0 +1,8 @@
+.mainContainer {
+  display: flex;
+}
+
+.img {
+  height: 12rem;
+  width: auto;
+}
