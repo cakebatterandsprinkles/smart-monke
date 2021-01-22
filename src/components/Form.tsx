@@ -1,11 +1,23 @@
 import type { FormEvent, FunctionComponent } from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import NumberFormat from "react-number-format";
 import Mascot from "../images/IMG_0405.png";
 import styles from "./Form.module.css";
 import Layout from "./Layout";
 
 const Form: FunctionComponent = () => {
-  const inputEl = useRef<HTMLInputElement>(null);
+  const [salesPrice, setSalesPrice] = useState<number>();
+  const [salesTaxBuy, setSalesTaxBuy] = useState<number>();
+  const [upfrontCosts, setUpfrontCosts] = useState<number>();
+  const [totalCashCost, setTotalCashCost] = useState<number>();
+  const [monthlyLeasePrice, setMonthlyLeasePrice] = useState<number>();
+  const [salesTaxLease, setSalesTaxLease] = useState<number>();
+  const [leaseDuration, setLeaseDuration] = useState<number>();
+  const [residualPrice, setResidualPrice] = useState<number>();
+  const [investmentReturn, setInvestmentReturn] = useState<number>();
+  const [upfrontPayment, setUpfrontPayment] = useState<number>();
+  const [taxesAndFees, setTaxesAndFees] = useState<number>();
+
   const [dropdownBtnActive, setDropdownBtnActive] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("Cash");
 
@@ -14,7 +26,26 @@ const Form: FunctionComponent = () => {
     // but once current exists, it is of type HTMLInputElement, thus it
     // has the method focus! ✅
     e.preventDefault();
-    console.log(inputEl.current?.value);
+    console.group("BUY");
+    console.log("Sales Price: $", salesPrice?.toLocaleString());
+    console.log("Sales Tax:", salesTaxBuy, "%");
+    console.log("Upfront Costs: $", upfrontCosts?.toLocaleString());
+    console.log("TOTAL CASH COST: $", totalCashCost?.toLocaleString());
+    console.groupEnd();
+    console.group("LEASE");
+    console.log("Monthly Lease Price: $ ", salesTaxBuy?.toLocaleString());
+    console.log("Sales Tax: %", salesTaxLease);
+    console.log("Lease Duration:", leaseDuration, "months");
+    console.log("Residual Price: $ ", residualPrice?.toLocaleString());
+    console.log("Investment Return: $ ", investmentReturn?.toLocaleString());
+    console.log("Upfront Payment: $ ", upfrontPayment?.toLocaleString());
+    console.log("Taxes and Fees: $ ", taxesAndFees?.toLocaleString());
+    console.groupEnd();
+
+    if (salesPrice !== undefined && salesTaxBuy !== undefined && upfrontCosts !== undefined) {
+      const cashCost = salesPrice * (1 + salesTaxBuy / 100) + upfrontCosts;
+      setTotalCashCost(cashCost);
+    }
   };
 
   const handleDropdownClick = (e: React.MouseEvent<HTMLElement, MouseEvent>): void => {
@@ -42,18 +73,45 @@ const Form: FunctionComponent = () => {
       <div>
         <div className={styles.inputField}>
           <label htmlFor="salesPrice">Sales Price:</label>
-          <input id="salesPrice" name="salesPrice" ref={inputEl} type="number" />
-          <span className={styles.unit}>$</span>
+          <NumberFormat
+            decimalScale={2}
+            name="salesPrice"
+            onValueChange={(values): void => {
+              setSalesPrice(values.floatValue);
+            }}
+            prefix="$"
+            thousandSeparator={true}
+            value={salesPrice}
+          />
         </div>
         <div className={styles.inputField}>
           <label htmlFor="salesTax">Sales Tax:</label>
-          <input id="salesTax" name="salesTax" type="number" />
-          <span className={styles.unit}>%</span>
+          <NumberFormat
+            decimalScale={2}
+            name="salesTax"
+            onValueChange={(values): void => {
+              setSalesTaxBuy(values.floatValue);
+            }}
+            suffix="%"
+            thousandSeparator={true}
+            value={salesTaxBuy}
+          />{" "}
         </div>
         <div className={styles.inputField}>
           <label htmlFor="upfrontCosts">Upfront Costs:</label>
-          <input id="upfrontCosts" name="upfrontCosts" type="number" />
-          <span className={styles.unit}>$</span>
+          <NumberFormat
+            decimalScale={2}
+            name="upfrontCosts"
+            onValueChange={(values): void => {
+              setUpfrontCosts(values.floatValue);
+            }}
+            prefix="$"
+            thousandSeparator={true}
+            value={upfrontCosts}
+          />{" "}
+        </div>
+        <div className={styles.cashCostDiv}>
+          Total Cash Cost: ${totalCashCost ? totalCashCost.toLocaleString() : 0}
         </div>
       </div>
     );
@@ -64,7 +122,7 @@ const Form: FunctionComponent = () => {
       <div>
         <div className={styles.inputField}>
           <label htmlFor="loanInterest">Loan Interest:</label>
-          <input id="loanInterest" name="loanInterest" ref={inputEl} type="number" />
+          <input id="loanInterest" name="loanInterest" type="number" />
         </div>
         <div className={styles.inputField}>
           <label htmlFor="loanDuration">Loan Duration:</label>
@@ -78,7 +136,10 @@ const Form: FunctionComponent = () => {
     <Layout>
       <div className={styles.banner}>
         <img alt="mascot" className={styles.img} src={Mascot} />
-        <p>Want to know which one makes more sense for you?</p>
+        <div className={styles.bannerTextWrapper}>
+          <h1 className={styles.bannerHeading}>To buy or to lease?</h1>
+          <p className={styles.bannerText}>Estimations</p>
+        </div>
       </div>
       <form className={styles.mainContainer} onSubmit={handleSubmit}>
         <div className={styles.formContainer}>
@@ -121,40 +182,96 @@ const Form: FunctionComponent = () => {
             <p className={styles.mainHeader}>LEASE</p>
             <div className={styles.inputField}>
               <label htmlFor="leasePrice">Monthly Lease Price:</label>
-              <input id="leasePrice" name="leasePrice" type="number" />{" "}
-              <span className={styles.unit}>$</span>
+              <NumberFormat
+                decimalScale={2}
+                name="monthlyLeasePrice"
+                onValueChange={(values): void => {
+                  setMonthlyLeasePrice(values.floatValue);
+                }}
+                prefix="$"
+                thousandSeparator={true}
+                value={monthlyLeasePrice}
+              />{" "}
             </div>
             <div className={styles.inputField}>
               <label htmlFor="salesTax">Sales Tax:</label>
-              <input id="salesTax" name="salesTax" type="number" />{" "}
-              <span className={styles.unit}>%</span>
+              <NumberFormat
+                decimalScale={2}
+                name="salesTaxLease"
+                onValueChange={(values): void => {
+                  setSalesTaxLease(values.floatValue);
+                }}
+                suffix="%"
+                thousandSeparator={true}
+                value={salesTaxLease}
+              />{" "}
             </div>
             <div className={styles.inputField}>
               <label htmlFor="leaseDuration">Lease Duration:</label>
-              <input id="leaseDuration" name="leaseDuration" type="number" />{" "}
-              <span className={styles.unit}>mo</span>
+              <NumberFormat
+                decimalScale={2}
+                name="leaseDuration"
+                onValueChange={(values): void => {
+                  setLeaseDuration(values.floatValue);
+                }}
+                suffix=" months"
+                thousandSeparator={true}
+                value={leaseDuration}
+              />{" "}
             </div>
             <div className={styles.buttonAndFormWrapper}></div>
             <div className={styles.inputField}>
               <label htmlFor="residualPrice">Residual Price:</label>
-              <input id="residualPrice" name="residualPrice" type="number" />{" "}
-              <span className={styles.unit}>$</span>
+              <NumberFormat
+                decimalScale={2}
+                name="residualPrice"
+                onValueChange={(values): void => {
+                  setResidualPrice(values.floatValue);
+                }}
+                prefix="$"
+                thousandSeparator={true}
+                value={residualPrice}
+              />{" "}
             </div>
             <div className={styles.inputField}>
               <label htmlFor="investmentReturn">Expected Yearly Investment Return:</label>
-              <input id="investmentReturn" name="investmentReturn" type="number" />{" "}
-              <span className={styles.unit}>$</span>
+              <NumberFormat
+                decimalScale={2}
+                name="investmentReturn"
+                onValueChange={(values): void => {
+                  setInvestmentReturn(values.floatValue);
+                }}
+                prefix="$"
+                thousandSeparator={true}
+                value={investmentReturn}
+              />{" "}
             </div>
             <div className={styles.wrapper}>Upfront Costs</div>
             <div className={styles.inputField}>
               <label htmlFor="upfrontPayment">Upfront Payment:</label>
-              <input id="upfrontPayment" name="upfrontPayment" type="number" />
-              <span className={styles.unit}>$</span>
+              <NumberFormat
+                decimalScale={2}
+                name="upfrontPayment"
+                onValueChange={(values): void => {
+                  setUpfrontPayment(values.floatValue);
+                }}
+                prefix="$"
+                thousandSeparator={true}
+                value={upfrontPayment}
+              />{" "}
             </div>
             <div className={styles.inputField}>
               <label htmlFor="taxesAndFees">Taxes & Fees:</label>
-              <input id="taxesAndFees" name="taxesAndFees" type="number" />
-              <span className={styles.unit}>$</span>
+              <NumberFormat
+                decimalScale={2}
+                name="taxesAndFees"
+                onValueChange={(values): void => {
+                  setTaxesAndFees(values.floatValue);
+                }}
+                prefix="$"
+                thousandSeparator={true}
+                value={taxesAndFees}
+              />{" "}
             </div>
           </div>
           <div>

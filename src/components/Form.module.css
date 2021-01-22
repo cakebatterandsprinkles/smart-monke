@@ -15,10 +15,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1rem;
-  margin: 1rem;
-  border: 1px solid var(--black);
+  width: 100%;
+  padding: 1rem 0;
+  margin: 1rem 0;
+  border: 1px solid var(--midGray);
   border-radius: 20px;
+  background-color: white;
+}
+
+.bannerTextWrapper {
+  min-width: 25rem;
 }
 
 .mainHeader {
@@ -100,7 +106,7 @@
   background-color: #f1f1f1;
 }
 
-.dropdown:active .dropbtn {
+.dropbtn:active {
   transition-duration: 0.2s;
   transform: translate(0.1rem, 0.05rem);
   background: #f8f8f8;
@@ -140,10 +146,9 @@
   background: rgba(0, 0, 0, 0.2);
 }
 
-.unit {
-  font-size: 0.9rem;
-  margin-left: 0.25rem;
-  color: var(--midgray);
+.cashCostDiv {
+  border-top: 1px solid black;
+  padding-top: 1rem;
 }
 
 @media (max-width: 1200px) {
