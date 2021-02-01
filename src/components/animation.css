@@ -1,0 +1,27 @@
+@keyframes pulse {
+  0% {
+    transform: rotate(0deg);
+    filter: blur(8px);
+    border-radius: 5px;
+  }
+
+  33% {
+    transform: rotate(-0.5deg) translate(1px, -1px) scale(1.01);
+    filter: blur(10px);
+    border-radius: 3px;
+  }
+  67% {
+    transform: rotate(1deg) translate(-1px, -1px) scale(0.99);
+    filter: blur(14px);
+    border-radius: 7px;
+  }
+  100% {
+    transform: rotate(0deg);
+    filter: blur(8px);
+    border-radius: 5px;
+  }
+}
+
+.anima {
+  animation: 1s ease-in-out 0s infinite normal both running pulse;
+}

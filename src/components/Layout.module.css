@@ -1,8 +1,6 @@
 .container {
   display: flex;
-  justify-content: center;
-  background-image: url("../images/dot-grid.png");
-  background-repeat: repeat;
+  background-color: var(--offwhite);
 }
 
 .contentWrapper {
@@ -15,6 +13,11 @@
   justify-content: center;
   align-items: center;
   padding: 1rem 3rem;
+}
+
+.monke {
+  width: 4rem;
+  height: auto;
 }
 
 @media (max-width: 1200px) {

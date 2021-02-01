@@ -1,9 +1,7 @@
 import type { FormEvent, FunctionComponent } from "react";
 import { useCallback, useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
-import Mascot from "../images/IMG_0405.png";
 import styles from "./Form.module.css";
-import Layout from "./Layout";
 
 const Form: FunctionComponent = () => {
   const [salesPrice, setSalesPrice] = useState<number>();
@@ -163,11 +161,10 @@ const Form: FunctionComponent = () => {
   };
 
   return (
-    <Layout>
+    <div>
       <div className={styles.banner}>
-        <img alt="mascot" className={styles.img} src={Mascot} />
         <div className={styles.bannerTextWrapper}>
-          <h1 className={styles.bannerHeading}>To buy or to lease?</h1>
+          <h1 className={styles.bannerHeading}>To rent or to buy?</h1>
           <p className={styles.bannerText}>Estimations</p>
         </div>
       </div>
@@ -309,7 +306,7 @@ const Form: FunctionComponent = () => {
           </div>
         </div>
       </form>
-    </Layout>
+    </div>
   );
 };
 
