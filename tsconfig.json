@@ -30,6 +30,6 @@
     "strictBindCallApply": true,
     "types": ["jest", "@types/testing-library__jest-dom"]
   },
-  "include": ["src", "../mendokusai-react/client/src/components/Layout/Layout.jsx"],
+  "include": ["src"],
   "exclude": ["**/node_modules", "**/.*/"]
 }

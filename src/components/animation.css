@@ -23,5 +23,5 @@
 }
 
 .anima {
-  animation: 1s ease-in-out 0s infinite normal both running pulse;
+  animation: 10s ease-in-out 0s infinite normal both running pulse;
 }

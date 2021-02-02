@@ -1,27 +1,103 @@
 .container {
+  position: relative;
   display: flex;
+  min-height: 100vh;
+  flex-direction: column;
   background-color: var(--offwhite);
+  font-family: var(--regularFont);
 }
 
-.contentWrapper {
-  min-height: 100vh;
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  height: 4rem;
+  display: flex;
+  font-family: var(--headingFont);
+  padding: 0.5rem 1rem;
+  background-color: #222222;
+}
+
+.logoContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logoText {
+  color: var(--offwhite);
+  font-size: 1.5rem;
+  margin: 0 1rem;
+  text-align: end;
+  display: flex;
+  align-items: flex-end;
+}
+
+.monke {
+  width: 3.25rem;
+  height: auto;
+}
+
+.contentContainer {
   overflow-y: auto;
   background-color: var(--offwhite);
   position: relative;
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 1rem 3rem;
 }
 
-.monke {
-  width: 4rem;
-  height: auto;
+.contentWrapper {
+  position: relative;
+  padding: 1px;
+  border-radius: 8px;
+  margin-right: 2rem;
+}
+
+.backgroundContainer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  filter: blur(1px);
+  border-radius: 8px;
+  transition: opacity 1.5s ease 0s;
+  opacity: 0.75;
+  background: conic-gradient(
+    from 217.29deg at 51.63% 52.16%,
+    rgb(98, 0, 255) 0deg,
+    rgb(0, 153, 255) 19.5deg,
+    rgb(29, 255, 161) 102.75deg,
+    rgb(212, 245, 27) 152.25deg,
+    rgb(255, 191, 53) 208.88deg,
+    rgb(255, 30, 199) 291deg
+  );
+}
+
+.textContainer {
+  position: relative;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 6px 12px 6px 8px;
+  cursor: pointer;
+  background-color: #222222;
+}
+
+.linkContainer {
+  display: flex;
+  color: var(--offwhite);
 }
 
 @media (max-width: 1200px) {
-  .contentWrapper {
+  .contentContainer {
     width: 100%;
   }
 }
@@ -31,7 +107,7 @@
     flex-direction: column;
   }
 
-  .contentWrapper {
+  .contentContainer {
     min-height: auto;
     margin-left: 0;
   }

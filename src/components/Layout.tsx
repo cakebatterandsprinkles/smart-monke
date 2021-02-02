@@ -1,6 +1,7 @@
 import type { FC, ReactElement } from "react";
 import { useCallback, useState } from "react";
 import Logo from "../images/monke.png";
+import "./animation.css";
 import CarForm from "./CarForm";
 import HouseForm from "./HouseForm";
 import Landing from "./Landing";
@@ -31,7 +32,7 @@ const Layout: FC = () => {
 
   return (
     <div className={styles.container}>
-      <nav>
+      <div className={styles.navbar}>
         <div
           className={styles.logoContainer}
           onClick={(): void => {
@@ -39,26 +40,30 @@ const Layout: FC = () => {
           }}
         >
           <img alt="monke logo" className={styles.monke} src={Logo} />
-          <p className={styles.logoText}>SmartMonke</p>
+          <div className={styles.logoText}>SmartMonke</div>
         </div>
-        <div
-          className={styles.linkContainer}
-          onClick={(): void => {
-            setStateAndRenderContent("buy-or-lease");
-          }}
-        >
-          <p className={styles.link}>Buy or Lease?</p>
+        <div className={styles.linkContainer}>
+          <div
+            className={styles.contentWrapper}
+            onClick={(): void => {
+              setStateAndRenderContent("buy-or-lease");
+            }}
+          >
+            <div className={`anima ${styles.backgroundContainer ?? ""}`}></div>
+            <div className={styles.textContainer}>Buy or Lease?</div>
+          </div>
+          <div
+            className={styles.contentWrapper}
+            onClick={(): void => {
+              setStateAndRenderContent("rent-or-buy");
+            }}
+          >
+            <div className={`anima ${styles.backgroundContainer ?? ""}`}></div>
+            <div className={styles.textContainer}>Rent or Buy?</div>
+          </div>
         </div>
-        <div
-          className={styles.linkContainer}
-          onClick={(): void => {
-            setStateAndRenderContent("rent-or-buy");
-          }}
-        >
-          <p className={styles.link}>Rent or Buy?</p>
-        </div>
-      </nav>
-      <div className={styles.contentWrapper}>{content}</div>
+      </div>
+      <div className={styles.contentContainer}>{content}</div>
     </div>
   );
 };

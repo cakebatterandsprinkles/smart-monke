@@ -14,8 +14,8 @@
   --lightgray: #e0e0e0;
   --transparentLightGray: #e6e4e4d2;
   --offwhite: #f3f3f1;
-  --regularFont: "Crimson Text", serif;
-  --headingFont: "Chivo", sans-serif;
+  --regularFont: "Nunito", sans-serif;
+  --headingFont: "PT Sans", sans-serif;
 }
 
 body {
