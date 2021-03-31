@@ -1,17 +1,50 @@
 import type { FC, ReactElement } from "react";
-import { useCallback, useState } from "react";
+import { Fragment, useCallback, useState } from "react";
 import Logo from "../images/monke.png";
 import "./animation.css";
 import CarForm from "./CarForm";
 import HouseForm from "./HouseForm";
-import Landing from "./Landing";
 import styles from "./Layout.module.css";
+import SplitPage from "./SplitPage";
 
 const Layout: FC = () => {
   const [chosenContent, setChosenContent] = useState("");
+  const [mouseOverLeft, setMouseOverLeft] = useState(false);
+  const [mouseOverRight, setMouseOverRight] = useState(false);
   const renderContent = useCallback((): ReactElement => {
     if (chosenContent === "") {
-      return <Landing />;
+      return (
+        <Fragment>
+          <SplitPage
+            buttonText="Calculate"
+            className={mouseOverLeft ? styles.leftHover : mouseOverRight ? styles.rightHover : ""}
+            header="buy-or-lease"
+            onClickHandle={(): void => {
+              setChosenContent("buy-or-lease");
+            }}
+            onMouseOverHandle={(): void => {
+              setMouseOverLeft(true);
+              setMouseOverRight(false);
+            }}
+            slogan="Buy or Lease?"
+            style={styles.left}
+          />
+          <SplitPage
+            buttonText="Calculate"
+            className={mouseOverLeft ? styles.leftHover : mouseOverRight ? styles.rightHover : ""}
+            header="rent-or-buy"
+            onClickHandle={(): void => {
+              setChosenContent("rent-or-buy");
+            }}
+            onMouseOverHandle={(): void => {
+              setMouseOverLeft(false);
+              setMouseOverRight(true);
+            }}
+            slogan="Rent or Buy?"
+            style={styles.right}
+          />
+        </Fragment>
+      );
     }
 
     if (chosenContent === "buy-or-lease") {
@@ -22,7 +55,7 @@ const Layout: FC = () => {
       return <HouseForm />;
     }
     return <span />;
-  }, [chosenContent]);
+  }, [chosenContent, mouseOverLeft, mouseOverRight]);
 
   const setStateAndRenderContent = (value: string): void => {
     setChosenContent(value);
@@ -40,27 +73,7 @@ const Layout: FC = () => {
           }}
         >
           <img alt="monke logo" className={styles.monke} src={Logo} />
-          <div className={styles.logoText}>SmartMonke</div>
-        </div>
-        <div className={styles.linkContainer}>
-          <div
-            className={styles.contentWrapper}
-            onClick={(): void => {
-              setStateAndRenderContent("buy-or-lease");
-            }}
-          >
-            <div className={`anima ${styles.backgroundContainer ?? ""}`}></div>
-            <div className={styles.textContainer}>Buy or Lease?</div>
-          </div>
-          <div
-            className={styles.contentWrapper}
-            onClick={(): void => {
-              setStateAndRenderContent("rent-or-buy");
-            }}
-          >
-            <div className={`anima ${styles.backgroundContainer ?? ""}`}></div>
-            <div className={styles.textContainer}>Rent or Buy?</div>
-          </div>
+          <p className={styles.logoText}>SmartMonke</p>
         </div>
       </div>
       <div className={styles.contentContainer}>{content}</div>

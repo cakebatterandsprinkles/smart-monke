@@ -9,7 +9,6 @@ module.exports = {
   ],
   rules: {
     // "max-lines": "error",
-    "no-nested-ternary": "error",
     "no-unneeded-ternary": "error",
     eqeqeq: "error",
     "no-else-return": ["error", { allowElseIf: false }],
