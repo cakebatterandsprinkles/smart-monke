@@ -162,12 +162,7 @@ const Form: FunctionComponent = () => {
 
   return (
     <div>
-      <div className={styles.banner}>
-        <div className={styles.bannerTextWrapper}>
-          <h1 className={styles.bannerHeading}>To buy or to lease?</h1>
-          <p className={styles.bannerText}>Estimations</p>
-        </div>
-      </div>
+      <h1 className={styles.bannerHeading}>To buy or to lease?</h1>
       <form className={styles.mainContainer} onSubmit={handleSubmit}>
         <div className={styles.formContainer}>
           <p className={styles.mainHeader}>BUY</p>

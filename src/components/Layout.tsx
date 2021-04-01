@@ -1,6 +1,7 @@
 import type { FC, ReactElement } from "react";
 import { Fragment, useCallback, useState } from "react";
 import Logo from "../images/monke.png";
+import { ReactComponent as Star } from "../images/star.svg";
 import "./animation.css";
 import CarForm from "./CarForm";
 import HouseForm from "./HouseForm";
@@ -18,6 +19,7 @@ const Layout: FC = () => {
           <SplitPage
             buttonText="Calculate"
             className={mouseOverLeft ? styles.leftHover : mouseOverRight ? styles.rightHover : ""}
+            emoji="car"
             header="buy-or-lease"
             onClickHandle={(): void => {
               setChosenContent("buy-or-lease");
@@ -28,10 +30,12 @@ const Layout: FC = () => {
             }}
             slogan="Buy or Lease?"
             style={styles.left}
+            subtext="Not sure leasing or buying a car is better in your specific situation?"
           />
           <SplitPage
             buttonText="Calculate"
             className={mouseOverLeft ? styles.leftHover : mouseOverRight ? styles.rightHover : ""}
+            emoji="house"
             header="rent-or-buy"
             onClickHandle={(): void => {
               setChosenContent("rent-or-buy");
@@ -42,6 +46,7 @@ const Layout: FC = () => {
             }}
             slogan="Rent or Buy?"
             style={styles.right}
+            subtext="Not sure renting or buying a house is better in your specific situation?"
           />
         </Fragment>
       );
@@ -77,6 +82,13 @@ const Layout: FC = () => {
         </div>
       </div>
       <div className={styles.contentContainer}>{content}</div>
+      <div className={styles.footer}>
+        <Star className={styles.icon} />
+        <p className={styles.linkTitle}>Github:</p>{" "}
+        <a className={styles.link} href="">
+          cakebatterandsprinkles/smart-monke
+        </a>
+      </div>
     </div>
   );
 };
