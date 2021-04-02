@@ -53,11 +53,19 @@ const Layout: FC = () => {
     }
 
     if (chosenContent === "buy-or-lease") {
-      return <CarForm />;
+      return (
+        <div className={styles.carForm}>
+          <CarForm />
+        </div>
+      );
     }
 
     if (chosenContent === "rent-or-buy") {
-      return <HouseForm />;
+      return (
+        <div className={styles.houseForm}>
+          <HouseForm />
+        </div>
+      );
     }
     return <span />;
   }, [chosenContent, mouseOverLeft, mouseOverRight]);

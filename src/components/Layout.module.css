@@ -19,7 +19,7 @@
 }
 
 .logoText {
-  color: var(--offwhite);
+  color: var(--black);
   letter-spacing: 0.1rem;
   font-family: var(--monospaceFont);
   font-size: 1.5rem;
@@ -79,6 +79,22 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.carForm {
+  width: 100%;
+  height: 100vh;
+  background: url(../images/luke-stackpoole-x2qSNIEZuEE-unsplash.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.houseForm {
+  width: 100%;
+  height: 100vh;
+  background: url(../images/roam-in-color-RryFk4n-vOs-unsplash.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .contentWrapper {
@@ -193,9 +209,6 @@
   }
   .footer {
     width: 60%;
-  }
-  .logoText {
-    color: var(--black);
   }
 }
 

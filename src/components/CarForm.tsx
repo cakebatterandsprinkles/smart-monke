@@ -1,6 +1,7 @@
 import type { FormEvent, FunctionComponent } from "react";
 import { useCallback, useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
+import { ReactComponent as CarIcon } from "../images/truck.svg";
 import styles from "./Form.module.css";
 
 const Form: FunctionComponent = () => {
@@ -161,146 +162,151 @@ const Form: FunctionComponent = () => {
   };
 
   return (
-    <div>
-      <h1 className={styles.bannerHeading}>To buy or to lease?</h1>
-      <form className={styles.mainContainer} onSubmit={handleSubmit}>
-        <div className={styles.formContainer}>
-          <p className={styles.mainHeader}>BUY</p>
-          <div className={styles.dropdown}>
-            <button className={styles.dropbtn} onClick={handleDropdownClick} type="button">
-              <span className={styles.title}>Payment Method: </span>
-              <span>
-                {paymentMethod}
-                <span className={styles.dropIcon}> ▼</span>
-              </span>
-              <div
-                className={
-                  dropdownBtnActive ? styles.dropdownContentActive : styles.dropdownContent
-                }
-              >
-                <p
-                  className={paymentMethod === "Cash" ? styles.active : ""}
-                  onClick={(): void => {
-                    choosePayment("Cash");
-                  }}
-                >
-                  Cash
-                </p>
-                <p
-                  className={paymentMethod === "Loan" ? styles.active : ""}
-                  onClick={(): void => {
-                    choosePayment("Loan");
-                  }}
-                >
-                  Loan
-                </p>
-              </div>
-            </button>
-            {paymentMethod === "Cash" ? renderCashJSX() : renderLoanJSX()}
-          </div>
+    <div className={styles.mainWrapper}>
+      <div className={styles.innerWrapper}>
+        <div className={styles.headingContainer}>
+          <CarIcon className={styles.icon} />
+          <p className={styles.bannerHeading}>To buy or to lease?</p>
         </div>
-        <div>
+        <form className={styles.mainContainer} onSubmit={handleSubmit}>
           <div className={styles.formContainer}>
-            <p className={styles.mainHeader}>LEASE</p>
-            <div className={styles.inputField}>
-              <label htmlFor="leasePrice">Monthly Lease Price:</label>
-              <NumberFormat
-                decimalScale={2}
-                name="monthlyLeasePrice"
-                onValueChange={(values): void => {
-                  setMonthlyLeasePrice(values.floatValue);
-                }}
-                prefix="$"
-                thousandSeparator={true}
-                value={monthlyLeasePrice}
-              />{" "}
-            </div>
-            <div className={styles.inputField}>
-              <label htmlFor="salesTax">Sales Tax:</label>
-              <NumberFormat
-                decimalScale={2}
-                name="salesTaxLease"
-                onValueChange={(values): void => {
-                  setSalesTaxLease(values.floatValue);
-                }}
-                suffix="%"
-                thousandSeparator={true}
-                value={salesTaxLease}
-              />{" "}
-            </div>
-            <div className={styles.inputField}>
-              <label htmlFor="leaseDuration">Lease Duration:</label>
-              <NumberFormat
-                decimalScale={2}
-                name="leaseDuration"
-                onValueChange={(values): void => {
-                  setLeaseDuration(values.floatValue);
-                }}
-                suffix=" months"
-                thousandSeparator={true}
-                value={leaseDuration}
-              />{" "}
-            </div>
-            <div className={styles.buttonAndFormWrapper}></div>
-            <div className={styles.inputField}>
-              <label htmlFor="residualPrice">Residual Price:</label>
-              <NumberFormat
-                decimalScale={2}
-                name="residualPrice"
-                onValueChange={(values): void => {
-                  setResidualPrice(values.floatValue);
-                }}
-                prefix="$"
-                thousandSeparator={true}
-                value={residualPrice}
-              />{" "}
-            </div>
-            <div className={styles.inputField}>
-              <label htmlFor="investmentReturn">Expected Yearly Investment Return:</label>
-              <NumberFormat
-                decimalScale={2}
-                name="investmentReturn"
-                onValueChange={(values): void => {
-                  setInvestmentReturn(values.floatValue);
-                }}
-                prefix="$"
-                thousandSeparator={true}
-                value={investmentReturn}
-              />{" "}
-            </div>
-            <div className={styles.wrapper}>Upfront Costs</div>
-            <div className={styles.inputField}>
-              <label htmlFor="upfrontPayment">Upfront Payment:</label>
-              <NumberFormat
-                decimalScale={2}
-                name="upfrontPayment"
-                onValueChange={(values): void => {
-                  setUpfrontPayment(values.floatValue);
-                }}
-                prefix="$"
-                thousandSeparator={true}
-                value={upfrontPayment}
-              />{" "}
-            </div>
-            <div className={styles.inputField}>
-              <label htmlFor="taxesAndFees">Taxes & Fees:</label>
-              <NumberFormat
-                decimalScale={2}
-                name="taxesAndFees"
-                onValueChange={(values): void => {
-                  setTaxesAndFees(values.floatValue);
-                }}
-                prefix="$"
-                thousandSeparator={true}
-                value={taxesAndFees}
-              />{" "}
+            <p className={styles.mainHeader}>BUY</p>
+            <div className={styles.dropdown}>
+              <button className={styles.dropbtn} onClick={handleDropdownClick} type="button">
+                <span className={styles.title}>Payment Method: </span>
+                <span>
+                  {paymentMethod}
+                  <span className={styles.dropIcon}> ▼</span>
+                </span>
+                <div
+                  className={
+                    dropdownBtnActive ? styles.dropdownContentActive : styles.dropdownContent
+                  }
+                >
+                  <p
+                    className={paymentMethod === "Cash" ? styles.active : ""}
+                    onClick={(): void => {
+                      choosePayment("Cash");
+                    }}
+                  >
+                    Cash
+                  </p>
+                  <p
+                    className={paymentMethod === "Loan" ? styles.active : ""}
+                    onClick={(): void => {
+                      choosePayment("Loan");
+                    }}
+                  >
+                    Loan
+                  </p>
+                </div>
+              </button>
+              {paymentMethod === "Cash" ? renderCashJSX() : renderLoanJSX()}
             </div>
           </div>
           <div>
-            <button type="submit">Calculate</button>
+            <div className={styles.formContainer}>
+              <p className={styles.mainHeader}>LEASE</p>
+              <div className={styles.inputField}>
+                <label htmlFor="leasePrice">Monthly Lease Price:</label>
+                <NumberFormat
+                  decimalScale={2}
+                  name="monthlyLeasePrice"
+                  onValueChange={(values): void => {
+                    setMonthlyLeasePrice(values.floatValue);
+                  }}
+                  prefix="$"
+                  thousandSeparator={true}
+                  value={monthlyLeasePrice}
+                />{" "}
+              </div>
+              <div className={styles.inputField}>
+                <label htmlFor="salesTax">Sales Tax:</label>
+                <NumberFormat
+                  decimalScale={2}
+                  name="salesTaxLease"
+                  onValueChange={(values): void => {
+                    setSalesTaxLease(values.floatValue);
+                  }}
+                  suffix="%"
+                  thousandSeparator={true}
+                  value={salesTaxLease}
+                />{" "}
+              </div>
+              <div className={styles.inputField}>
+                <label htmlFor="leaseDuration">Lease Duration:</label>
+                <NumberFormat
+                  decimalScale={2}
+                  name="leaseDuration"
+                  onValueChange={(values): void => {
+                    setLeaseDuration(values.floatValue);
+                  }}
+                  suffix=" months"
+                  thousandSeparator={true}
+                  value={leaseDuration}
+                />{" "}
+              </div>
+              <div className={styles.buttonAndFormWrapper}></div>
+              <div className={styles.inputField}>
+                <label htmlFor="residualPrice">Residual Price:</label>
+                <NumberFormat
+                  decimalScale={2}
+                  name="residualPrice"
+                  onValueChange={(values): void => {
+                    setResidualPrice(values.floatValue);
+                  }}
+                  prefix="$"
+                  thousandSeparator={true}
+                  value={residualPrice}
+                />{" "}
+              </div>
+              <div className={styles.inputField}>
+                <label htmlFor="investmentReturn">Expected Yearly Investment Return:</label>
+                <NumberFormat
+                  decimalScale={2}
+                  name="investmentReturn"
+                  onValueChange={(values): void => {
+                    setInvestmentReturn(values.floatValue);
+                  }}
+                  prefix="$"
+                  thousandSeparator={true}
+                  value={investmentReturn}
+                />{" "}
+              </div>
+              <div className={styles.wrapper}>Upfront Costs</div>
+              <div className={styles.inputField}>
+                <label htmlFor="upfrontPayment">Upfront Payment:</label>
+                <NumberFormat
+                  decimalScale={2}
+                  name="upfrontPayment"
+                  onValueChange={(values): void => {
+                    setUpfrontPayment(values.floatValue);
+                  }}
+                  prefix="$"
+                  thousandSeparator={true}
+                  value={upfrontPayment}
+                />{" "}
+              </div>
+              <div className={styles.inputField}>
+                <label htmlFor="taxesAndFees">Taxes & Fees:</label>
+                <NumberFormat
+                  decimalScale={2}
+                  name="taxesAndFees"
+                  onValueChange={(values): void => {
+                    setTaxesAndFees(values.floatValue);
+                  }}
+                  prefix="$"
+                  thousandSeparator={true}
+                  value={taxesAndFees}
+                />{" "}
+              </div>
+            </div>
+            <div className={styles.buttonContainer}>
+              <button type="submit">Calculate</button>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 };

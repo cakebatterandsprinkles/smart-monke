@@ -1,3 +1,19 @@
+.mainWrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.innerWrapper {
+  width: 800px;
+  background-color: var(--offwhite);
+  opacity: 85%;
+  padding: 2rem;
+  border-radius: 20px;
+}
+
 .mainContainer {
   display: flex;
   justify-content: space-between;
@@ -5,32 +21,30 @@
   font-family: var(--regularFont);
 }
 
-.img {
-  height: 12rem;
-  width: auto;
-}
-
-.banner {
+.headingContainer {
+  width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding: 1rem 0;
-  margin: 1rem 0;
-  border: 1px solid var(--midGray);
-  border-radius: 20px;
-  background-color: white;
 }
 
-.bannerTextWrapper {
-  min-width: 25rem;
+.bannerHeading {
+  font-family: var(--monospaceFont);
+  font-size: 1.5rem;
+  margin: 0.75rem;
+}
+
+.icon {
+  width: 2rem;
+  height: auto;
 }
 
 .mainHeader {
-  font-family: var(--headingFont);
-  font-size: 2rem;
-  color: var(--darkgray);
+  font-family: var(--monospaceFont);
+  font-size: 1.1rem;
   margin: 1.25rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dotted var(--black);
+  text-align: center;
 }
 
 .formContainer {
@@ -49,8 +63,9 @@
 .inputField > label {
   width: 10rem;
   height: 1.5rem;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   margin-right: 0.5rem;
+  color: var(--darkgray);
 }
 
 .inputField > input {
@@ -58,7 +73,7 @@
   font-size: 0.9rem;
   color: var(--darkgray);
   padding: 0.3rem 0.5rem;
-  border: 1px solid var(--midGray);
+  border: 1px solid var(--midgray);
   border-radius: 4px;
   outline: none;
 }
@@ -87,6 +102,8 @@
 .dropdownContentActive {
   display: block;
   position: absolute;
+  right: 2.75rem;
+  top: 2rem;
   background-color: #f9f9f9;
   min-width: 6.2rem;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.911);
@@ -112,11 +129,12 @@
 }
 
 .dropbtn {
+  font-family: var(--regularFont);
+  font-size: 0.9rem;
   border: none;
   padding: 0.6rem 0.8rem;
   background: var(--offwhite);
   border-radius: 10px;
-  font-size: 1rem;
   cursor: pointer;
   min-width: 20rem;
   margin-bottom: 1rem;
@@ -150,8 +168,36 @@
   padding-top: 1rem;
 }
 
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 1.35rem;
+}
+
+.buttonContainer button {
+  padding: 0.4rem 1.25rem;
+  text-transform: uppercase;
+  font-family: var(--monospaceFont);
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  font-weight: bold;
+  font-size: 0.75rem;
+  cursor: pointer;
+  background: var(--darkgray);
+  color: var(--offwhite);
+}
+
+.buttonContainer button:hover {
+  background: var(--midgray);
+}
+
 @media (max-width: 1200px) {
   .mainContainer {
     flex-direction: column;
+  }
+
+  .innerWrapper {
+    width: 90%;
   }
 }
