@@ -273,7 +273,9 @@ const Form: FunctionComponent = () => {
                   value={investmentReturn}
                 />{" "}
               </div>
-              <div className={styles.wrapper}>Upfront Costs</div>
+              <div className={styles.wrapper}>
+                <p>Upfront Costs</p>
+              </div>
               <div className={styles.inputField}>
                 <label htmlFor="upfrontPayment">Upfront Payment:</label>
                 <NumberFormat

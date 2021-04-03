@@ -9,7 +9,7 @@
 .innerWrapper {
   width: 800px;
   background-color: var(--offwhite);
-  opacity: 85%;
+  opacity: 90%;
   padding: 2rem;
   border-radius: 20px;
 }
@@ -72,6 +72,7 @@
   width: 8rem;
   font-size: 0.9rem;
   color: var(--darkgray);
+  font-family: var(--monospaceFont);
   padding: 0.3rem 0.5rem;
   border: 1px solid var(--midgray);
   border-radius: 4px;
@@ -84,7 +85,6 @@
 }
 
 .wrapper {
-  width: 8rem;
   border-bottom: 1px solid var(--black);
   margin: 1rem 0 0.5rem 0;
 }
@@ -105,14 +105,15 @@
   right: 2.75rem;
   top: 2rem;
   background-color: #f9f9f9;
-  min-width: 6.2rem;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.911);
+  min-width: 5rem;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.459);
   z-index: 1;
 }
 
 .dropdownContentActive p {
   font-size: 0.9rem;
   color: rgba(0, 0, 0, 0.973);
+  margin: 0;
   padding: 0.5rem;
   text-decoration: none;
 }
@@ -192,12 +193,139 @@
   background: var(--midgray);
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 900px) {
   .mainContainer {
     flex-direction: column;
   }
 
   .innerWrapper {
     width: 90%;
+    margin-top: 2rem;
+    padding: 1rem;
+  }
+
+  .mainHeader {
+    margin: 0.75rem 8rem;
+  }
+
+  .dropdown {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .inputField {
+    display: flex;
+    justify-content: center;
+  }
+
+  .cashCostDiv {
+    display: flex;
+    justify-content: center;
+    padding-top: 0.5rem;
+    margin-bottom: 0.75rem;
+    margin-left: 10rem;
+    margin-right: 10rem;
+  }
+
+  .dropdownContentActive {
+    right: 14rem;
+    top: 2rem;
+  }
+
+  .wrapper {
+    text-align: center;
+    padding-bottom: 0.25rem;
+    margin-right: 10rem;
+    margin-left: 10rem;
+  }
+
+  .inputField {
+    margin-bottom: 0.5rem;
+  }
+
+  .inputField > input {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.3rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .cashCostDiv {
+    margin-left: 0;
+    margin-right: 0;
+    font-size: 0.9rem;
+  }
+
+  .wrapper {
+    margin-left: 5rem;
+    margin-right: 5rem;
+    font-size: 0.9rem;
+  }
+
+  .dropbtn {
+    margin-bottom: 0.25rem;
+  }
+
+  .mainHeader {
+    padding-bottom: 0.1rem;
+    margin: 0.25rem 4rem 0.5rem 4rem;
+    font-size: 1rem;
+  }
+
+  .headingContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .inputField {
+    margin-bottom: 0.25rem;
+  }
+
+  .bannerHeading {
+    font-size: 1.25rem;
+    margin: 0.25rem;
+  }
+
+  .icon {
+    width: 1.5rem;
+    height: auto;
+  }
+
+  .innerWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 95%;
+    padding: 0.5rem 0.25rem;
+  }
+
+  .dropdownContentActive {
+    right: 3.5rem;
+  }
+
+  .buttonContainer {
+    margin-top: 0.25rem;
+    padding: 0 2.55rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .innerWrapper {
+    margin-top: 1rem;
+  }
+
+  .inputField {
+    justify-content: space-between;
+  }
+  .inputField > label {
+    width: 10rem;
+    margin-right: 0.25rem;
+  }
+
+  .inputField > input {
+    width: 8rem;
   }
 }
