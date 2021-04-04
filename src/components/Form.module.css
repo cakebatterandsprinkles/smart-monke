@@ -54,6 +54,12 @@
   padding: 0 1rem;
 }
 
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  display: inline;
+}
+
 .inputField {
   display: flex;
   align-items: center;
@@ -247,6 +253,11 @@
   .inputField > input {
     font-size: 0.7rem;
     padding: 0.15rem 0.3rem;
+  }
+
+  .inputField > label {
+    display: flex;
+    align-items: center;
   }
 }
 
