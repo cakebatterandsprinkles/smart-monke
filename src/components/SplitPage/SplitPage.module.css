@@ -75,6 +75,9 @@
 
 .button {
   cursor: pointer;
+  text-decoration: none;
+  background-color: var(--offwhite);
+  color: var(--darkgray);
   width: 10rem;
   border: 1px solid var(--offwhite);
   border-radius: 10px;
