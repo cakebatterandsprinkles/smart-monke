@@ -2,18 +2,27 @@ import type { FormEvent, FunctionComponent } from "react";
 import { useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
 import { toast } from "react-toastify";
+import { calculateBuyCost, calculateRentCost } from "../calculators/house";
+import { rentParameters } from "../data/houseForm";
 import { ReactComponent as HouseIcon } from "../images/house.svg";
 import styles from "./Form.module.css";
 import Loader from "./Loader";
 import Results from "./Results";
 
 const Form: FunctionComponent = () => {
-  const [monthlyRent, setMonthlyRent] = useState<number>();
-  const [leaseDuration, setLeaseDuration] = useState<number>();
-  const [rentersInsurance, setRentersInsurance] = useState<number>();
-  const [investmentReturn, setInvestmentReturn] = useState<number>();
+  const [rentFormModel, setRentFormModel] = useState<
+    Record<
+      "investmentReturn" | "leaseDuration" | "monthlyRent" | "rentersInsurance",
+      number | undefined
+    >
+  >({
+    investmentReturn: undefined,
+    leaseDuration: undefined,
+    monthlyRent: undefined,
+    rentersInsurance: undefined,
+  });
+
   const [salesPrice, setSalesPrice] = useState<number>();
-  const [totalCashCost, setTotalCashCost] = useState<number>();
   const [homeInsurance, setHomeInsurance] = useState<number>();
   const [propertyTax, setPropertyTax] = useState<number>();
   const [mortgageDuration, setMortgageDuration] = useState<number>();
@@ -30,20 +39,20 @@ const Form: FunctionComponent = () => {
   const checkErrors = (): Promise<{ message: string }> =>
     new Promise((resolve, reject) => {
       if (
-        !monthlyRent ||
-        !leaseDuration ||
-        !rentersInsurance ||
-        !investmentReturn ||
-        !salesPrice ||
-        !homeInsurance ||
-        !propertyTax ||
-        !mortgageDuration ||
-        !mortgageRate ||
-        !downPayment ||
-        !hoa ||
-        !mortgageInsurance ||
-        !upkeepCosts ||
-        !closingCosts
+        rentFormModel.monthlyRent === undefined ||
+        rentFormModel.leaseDuration === undefined ||
+        rentFormModel.rentersInsurance === undefined ||
+        rentFormModel.investmentReturn === undefined ||
+        salesPrice === undefined ||
+        homeInsurance === undefined ||
+        propertyTax === undefined ||
+        mortgageDuration === undefined ||
+        mortgageRate === undefined ||
+        downPayment === undefined ||
+        hoa === undefined ||
+        mortgageInsurance === undefined ||
+        upkeepCosts === undefined ||
+        closingCosts === undefined
       ) {
         reject({ message: "Fill in the goddamn form will ya" });
       } else {
@@ -64,7 +73,6 @@ const Form: FunctionComponent = () => {
             }, 5000)
           );
         }
-        setTotalCashCost(12);
       })
       .catch(({ message }: { message: string }) => {
         toast.dark(message);
@@ -76,41 +84,6 @@ const Form: FunctionComponent = () => {
       if (timeoutHandle) clearTimeout(timeoutHandle);
     };
   }, [timeoutHandle]);
-
-  const rentParameters = [
-    {
-      label: "Monthly rent:",
-      name: "monthlyRent",
-      changeHandler: setMonthlyRent,
-      prefix: "$",
-      suffix: "",
-      value: monthlyRent,
-    },
-    {
-      label: "Lease Duration:",
-      name: "leaseDuration",
-      changeHandler: setLeaseDuration,
-      prefix: "",
-      suffix: " months",
-      value: leaseDuration,
-    },
-    {
-      label: "Renters insurance:",
-      name: "rentersInsurance",
-      changeHandler: setRentersInsurance,
-      prefix: "$",
-      suffix: "",
-      value: rentersInsurance,
-    },
-    {
-      label: "Investment Return:",
-      name: "investmentReturn",
-      changeHandler: setInvestmentReturn,
-      prefix: "$",
-      suffix: "",
-      value: investmentReturn,
-    },
-  ];
 
   const buyParameters = [
     {
@@ -210,12 +183,15 @@ const Form: FunctionComponent = () => {
                       decimalScale={2}
                       name={param.name}
                       onValueChange={(values): void => {
-                        param.changeHandler(values.floatValue ?? 0);
+                        setRentFormModel((model) => ({
+                          ...model,
+                          [param.name]: values.floatValue,
+                        }));
                       }}
                       prefix={param.prefix ? param.prefix : ""}
                       suffix={param.suffix ? param.suffix : ""}
                       thousandSeparator={true}
-                      value={param.value}
+                      value={rentFormModel[param.name]}
                     />{" "}
                   </div>
                 );
@@ -269,12 +245,18 @@ const Form: FunctionComponent = () => {
                 {rentParameters.map((param, index) => (
                   <div className={styles.parameter} key={`${param.name}-${index}`}>
                     <span className={styles.bold}>{`${param.label}`}</span>
-                    {` ${param.prefix}${param.value ?? 0} ${param.suffix}`}
+                    {` ${param.prefix}${rentFormModel[param.name] ?? 0} ${param.suffix}`}
                   </div>
                 ))}
                 <div className={styles.parameter}>
-                  <span className={styles.bold}>Total Cash Cost:</span>
-                  {` ${totalCashCost ?? 0}`}
+                  <span className={styles.bold}>TOTAL COST</span>
+                  {calculateRentCost({
+                    leaseMonths: rentFormModel.leaseDuration ?? 0,
+                    monthlyRent: rentFormModel.monthlyRent ?? 0,
+                    rentersInsurance: rentFormModel.rentersInsurance ?? 0,
+                    yearlyIncrease: 6,
+                    yearlyReturn: rentFormModel.investmentReturn ?? 0,
+                  })}
                 </div>
               </div>
             </div>
@@ -287,10 +269,28 @@ const Form: FunctionComponent = () => {
                     {` ${param.prefix}${param.value ?? 0} ${param.suffix}`}
                   </div>
                 ))}
+                <div className={styles.parameter}>
+                  <span className={styles.bold}>TOTAL COST</span>
+                  {calculateBuyCost({
+                    closingCosts: closingCosts ?? 0,
+                    downPayment: downPayment ?? 0,
+                    homeInsurance: homeInsurance ?? 0,
+                    leaseMonths: rentFormModel.leaseDuration ?? 0,
+                    monthlyHoaPayments: hoa ?? 0,
+                    mortgageDuration: mortgageDuration ?? 0,
+                    mortgageInsurance: mortgageInsurance ?? 0,
+                    mortgageRate: mortgageRate ?? 0,
+                    propertyTax: propertyTax ?? 0,
+                    salesPrice: salesPrice ?? 0,
+                    upkeepCosts: upkeepCosts ?? 0,
+                    yearlyInvestmentReturn: rentFormModel.investmentReturn ?? 0,
+                    yearlyPriceIncrease: 4,
+                  })}
+                </div>
               </div>
             </div>
           </div>
-          <Results />
+          <Results>Hi</Results>
         </div>
       );
     }
