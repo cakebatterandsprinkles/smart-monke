@@ -84,7 +84,7 @@
 .carForm {
   width: 100%;
   min-height: 100vh;
-  background: url(../images/luke-stackpoole-x2qSNIEZuEE-unsplash.jpg);
+  background: url(../../images/luke-stackpoole-x2qSNIEZuEE-unsplash.jpg);
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -92,7 +92,7 @@
 .houseForm {
   width: 100%;
   min-height: 100vh;
-  background: url(../images/roam-in-color-RryFk4n-vOs-unsplash.jpg);
+  background: url(../../images/roam-in-color-RryFk4n-vOs-unsplash.jpg);
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -106,14 +106,14 @@
 
 .left {
   left: 0;
-  background: url(../images/jon-flobrant-lRSChvh1Mhs-unsplash.jpg);
+  background: url(../../images/jon-flobrant-lRSChvh1Mhs-unsplash.jpg);
   background-repeat: no-repeat;
   background-size: cover;
 }
 
 .right {
   right: 0;
-  background: url(../images/roberto-nickson-bwIqQ5qQhXs-unsplash.jpg);
+  background: url(../../images/roberto-nickson-bwIqQ5qQhXs-unsplash.jpg);
   background-repeat: no-repeat;
   background-size: cover;
 }

@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { useEffect, useState } from "react";
-import Logo from "../images/monke.png";
+import Logo from "../../images/monke.png";
 import styles from "./Loader.module.css";
 
 const textArr: string[] = [

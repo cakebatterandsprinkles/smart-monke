@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
 import { toast } from "react-toastify";
 import { cashParameters, leaseParameters, loanParameters } from "../../data/carForm";
-import { ReactComponent as CarIcon } from "../images/truck.svg";
+import { ReactComponent as CarIcon } from "../../images/truck.svg";
 import Loader from "../Loader/Loader";
 import Results from "../Results/Results";
 import styles from "./Form.module.css";

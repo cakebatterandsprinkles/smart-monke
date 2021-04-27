@@ -4,7 +4,7 @@ import NumberFormat from "react-number-format";
 import { toast } from "react-toastify";
 import { calculateBuyCost, calculateRentCost } from "../../calculators/house";
 import { buyParameters, rentParameters } from "../../data/houseForm";
-import { ReactComponent as HouseIcon } from "../images/house.svg";
+import { ReactComponent as HouseIcon } from "../../images/house.svg";
 import Loader from "../Loader/Loader";
 import Results from "../Results/Results";
 import styles from "./Form.module.css";

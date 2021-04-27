@@ -1,7 +1,7 @@
 import type { FC } from "react";
-import { ReactComponent as HouseIcon } from "../images/house.svg";
-import { ReactComponent as CarIcon } from "../images/truck.svg";
-import "./animation.css";
+import { ReactComponent as HouseIcon } from "../../images/house.svg";
+import { ReactComponent as CarIcon } from "../../images/truck.svg";
+import "../animation.css";
 import styles from "./SplitPage.module.css";
 
 interface SplitPageProps {

@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import styles from "./Form.module.css";
+import styles from "../Forms/Form.module.css";
 
 const Results: FC = ({ children }) => {
   return (
