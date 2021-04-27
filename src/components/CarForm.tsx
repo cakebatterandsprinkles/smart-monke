@@ -30,7 +30,7 @@ const Form: FunctionComponent = () => {
   const checkErrors = (): Promise<{ message: string }> =>
     new Promise((resolve, reject) => {
       if (
-        (paymentMethod === "Cash" &&
+        (paymentMethod === "Loan" &&
           (!monthlyLoanPayment ||
             !salesTaxBuy ||
             !loanDuration ||
@@ -41,7 +41,7 @@ const Form: FunctionComponent = () => {
             !investmentReturn ||
             !upfrontPayment ||
             !taxesAndFees)) ||
-        (paymentMethod === "Loan" &&
+        (paymentMethod === "Cash" &&
           (!salesPrice ||
             !salesTaxBuy ||
             !upfrontCosts ||
@@ -59,7 +59,7 @@ const Form: FunctionComponent = () => {
       }
     });
 
-  const loanParameters = [
+  const cashParameters = [
     {
       label: "Sales Price:",
       name: "salesPrice",
@@ -85,7 +85,7 @@ const Form: FunctionComponent = () => {
       value: upfrontCosts,
     },
   ];
-  const cashParameters = [
+  const loanParameters = [
     {
       label: "Monthly Loan Payment:",
       name: "monthlyLoanPayment",
@@ -156,8 +156,8 @@ const Form: FunctionComponent = () => {
       label: "Yearly Investment Return:",
       name: "investmentReturn",
       changeHandler: setInvestmentReturn,
-      prefix: "$",
-      suffix: "",
+      prefix: "",
+      suffix: "%",
       value: investmentReturn,
     },
   ];
@@ -391,7 +391,7 @@ const Form: FunctionComponent = () => {
               </div>
             </div>
           </div>
-          <Results />
+          <Results>hi</Results>
         </div>
       );
     }
