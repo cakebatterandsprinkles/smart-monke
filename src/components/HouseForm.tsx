@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
 import { toast } from "react-toastify";
 import { calculateBuyCost, calculateRentCost } from "../calculators/house";
-import { rentParameters } from "../data/houseForm";
+import { buyParameters, rentParameters } from "../data/houseForm";
 import { ReactComponent as HouseIcon } from "../images/house.svg";
 import styles from "./Form.module.css";
 import Loader from "./Loader";
@@ -22,16 +22,33 @@ const Form: FunctionComponent = () => {
     rentersInsurance: undefined,
   });
 
-  const [salesPrice, setSalesPrice] = useState<number>();
-  const [homeInsurance, setHomeInsurance] = useState<number>();
-  const [propertyTax, setPropertyTax] = useState<number>();
-  const [mortgageDuration, setMortgageDuration] = useState<number>();
-  const [mortgageRate, setMortgageRate] = useState<number>();
-  const [downPayment, setDownPayment] = useState<number>();
-  const [mortgageInsurance, setMortgageInsurance] = useState<number>();
-  const [hoa, setHoa] = useState<number>();
-  const [upkeepCosts, setUpkeepCosts] = useState<number>();
-  const [closingCosts, setClosingCosts] = useState<number>();
+  const [buyFormModel, setBuyFormModel] = useState<
+    Record<
+      | "closingCosts"
+      | "downPayment"
+      | "hoa"
+      | "homeInsurance"
+      | "mortgageDuration"
+      | "mortgageInsurance"
+      | "mortgageRate"
+      | "propertyTax"
+      | "salesPrice"
+      | "upkeepCosts",
+      number | undefined
+    >
+  >({
+    salesPrice: undefined,
+    homeInsurance: undefined,
+    propertyTax: undefined,
+    mortgageDuration: undefined,
+    mortgageRate: undefined,
+    downPayment: undefined,
+    mortgageInsurance: undefined,
+    hoa: undefined,
+    upkeepCosts: undefined,
+    closingCosts: undefined,
+  });
+
   const [loader, setLoader] = useState<boolean>(false);
   const [result, setResult] = useState<boolean>(false);
   const [timeoutHandle, setTimeoutHandle] = useState<NodeJS.Timeout | null>(null);
@@ -43,20 +60,20 @@ const Form: FunctionComponent = () => {
         rentFormModel.leaseDuration === undefined ||
         rentFormModel.rentersInsurance === undefined ||
         rentFormModel.investmentReturn === undefined ||
-        salesPrice === undefined ||
-        homeInsurance === undefined ||
-        propertyTax === undefined ||
-        mortgageDuration === undefined ||
-        mortgageRate === undefined ||
-        downPayment === undefined ||
-        hoa === undefined ||
-        mortgageInsurance === undefined ||
-        upkeepCosts === undefined ||
-        closingCosts === undefined
+        buyFormModel.salesPrice === undefined ||
+        buyFormModel.homeInsurance === undefined ||
+        buyFormModel.propertyTax === undefined ||
+        buyFormModel.mortgageDuration === undefined ||
+        buyFormModel.mortgageRate === undefined ||
+        buyFormModel.downPayment === undefined ||
+        buyFormModel.hoa === undefined ||
+        buyFormModel.mortgageInsurance === undefined ||
+        buyFormModel.upkeepCosts === undefined ||
+        buyFormModel.closingCosts === undefined
       ) {
         reject({ message: "Fill in the goddamn form will ya" });
       } else {
-        resolve({ message: "Success" });
+        resolve({ message: "Success!" });
       }
     });
 
@@ -84,89 +101,6 @@ const Form: FunctionComponent = () => {
       if (timeoutHandle) clearTimeout(timeoutHandle);
     };
   }, [timeoutHandle]);
-
-  const buyParameters = [
-    {
-      label: "Sales Price:",
-      name: "salesPrice",
-      changeHandler: setSalesPrice,
-      prefix: "$",
-      suffix: "",
-      value: salesPrice,
-    },
-    {
-      label: "Home Insurance:",
-      name: "homeInsurance",
-      changeHandler: setHomeInsurance,
-      prefix: "$",
-      suffix: "",
-      value: homeInsurance,
-    },
-    {
-      label: "Property Tax:",
-      name: "propertyTax",
-      changeHandler: setPropertyTax,
-      prefix: "$",
-      suffix: "",
-      value: propertyTax,
-    },
-    {
-      label: "Mortgage Duration:",
-      name: "mortgageDuration",
-      changeHandler: setMortgageDuration,
-      prefix: "",
-      suffix: " months",
-      value: mortgageDuration,
-    },
-    {
-      label: "Mortgage Rate:",
-      name: "mortgageRate",
-      changeHandler: setMortgageRate,
-      prefix: "",
-      suffix: " %",
-      value: mortgageRate,
-    },
-    {
-      label: "Down Payment:",
-      name: "downPayment",
-      changeHandler: setDownPayment,
-      prefix: "$",
-      suffix: "",
-      value: downPayment,
-    },
-    {
-      label: "⭕ Mortgage Insurance:",
-      name: "mortgageInsurance",
-      changeHandler: setMortgageInsurance,
-      prefix: "$",
-      suffix: "",
-      value: mortgageInsurance,
-    },
-    {
-      label: "Monthly HOA Payments:",
-      name: "hoa",
-      changeHandler: setHoa,
-      prefix: "$",
-      suffix: "",
-      value: hoa,
-    },
-    {
-      label: "Upkeep Costs: (~1%)",
-      name: "upkeepCosts",
-      changeHandler: setUpkeepCosts,
-      prefix: "$",
-      suffix: "",
-      value: upkeepCosts,
-    },
-    {
-      label: "Closing Costs:",
-      name: "closingCosts",
-      changeHandler: setClosingCosts,
-      prefix: "$",
-      suffix: "",
-      value: closingCosts,
-    },
-  ];
 
   const renderContent = (): JSX.Element => {
     if (!loader && !result) {
@@ -212,12 +146,15 @@ const Form: FunctionComponent = () => {
                           decimalScale={2}
                           name={param.name}
                           onValueChange={(values): void => {
-                            param.changeHandler(values.floatValue ?? 0);
+                            setBuyFormModel((model) => ({
+                              ...model,
+                              [param.name]: values.floatValue,
+                            }));
                           }}
                           prefix={param.prefix ? param.prefix : ""}
                           suffix={param.suffix ? param.suffix : ""}
                           thousandSeparator={true}
-                          value={param.value}
+                          value={buyFormModel[param.name]}
                         />{" "}
                       </div>
                     </div>
@@ -266,23 +203,23 @@ const Form: FunctionComponent = () => {
                 {buyParameters.map((param, index) => (
                   <div className={styles.parameter} key={`${param.name}-${index}`}>
                     <span className={styles.bold}>{`${param.label}`}</span>
-                    {` ${param.prefix}${param.value ?? 0} ${param.suffix}`}
+                    {` ${param.prefix}${buyFormModel[param.name] ?? 0} ${param.suffix}`}
                   </div>
                 ))}
                 <div className={styles.parameter}>
                   <span className={styles.bold}>TOTAL COST</span>
                   {calculateBuyCost({
-                    closingCosts: closingCosts ?? 0,
-                    downPayment: downPayment ?? 0,
-                    homeInsurance: homeInsurance ?? 0,
+                    closingCosts: buyFormModel.closingCosts ?? 0,
+                    downPayment: buyFormModel.downPayment ?? 0,
+                    homeInsurance: buyFormModel.homeInsurance ?? 0,
                     leaseMonths: rentFormModel.leaseDuration ?? 0,
-                    monthlyHoaPayments: hoa ?? 0,
-                    mortgageDuration: mortgageDuration ?? 0,
-                    mortgageInsurance: mortgageInsurance ?? 0,
-                    mortgageRate: mortgageRate ?? 0,
-                    propertyTax: propertyTax ?? 0,
-                    salesPrice: salesPrice ?? 0,
-                    upkeepCosts: upkeepCosts ?? 0,
+                    monthlyHoaPayments: buyFormModel.hoa ?? 0,
+                    mortgageDuration: buyFormModel.mortgageDuration ?? 0,
+                    mortgageInsurance: buyFormModel.mortgageInsurance ?? 0,
+                    mortgageRate: buyFormModel.mortgageRate ?? 0,
+                    propertyTax: buyFormModel.propertyTax ?? 0,
+                    salesPrice: buyFormModel.salesPrice ?? 0,
+                    upkeepCosts: buyFormModel.upkeepCosts ?? 0,
                     yearlyInvestmentReturn: rentFormModel.investmentReturn ?? 0,
                     yearlyPriceIncrease: 4,
                   })}
