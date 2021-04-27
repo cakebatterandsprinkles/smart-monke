@@ -2,23 +2,43 @@ import type { FormEvent, FunctionComponent } from "react";
 import { useCallback, useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
 import { toast } from "react-toastify";
+import { cashParameters, leaseParameters, loanParameters } from "../data/carForm";
 import { ReactComponent as CarIcon } from "../images/truck.svg";
 import styles from "./Form.module.css";
 import Loader from "./Loader";
 import Results from "./Results";
 
 const Form: FunctionComponent = () => {
-  const [salesPrice, setSalesPrice] = useState<number>();
-  const [salesTaxBuy, setSalesTaxBuy] = useState<number>();
-  const [upfrontCosts, setUpfrontCosts] = useState<number>();
+  const [cashFormModel, setCashFormModel] = useState<
+    Record<"salesPrice" | "salesTax" | "upfrontCosts", number | undefined>
+  >({
+    salesPrice: undefined,
+    salesTax: undefined,
+    upfrontCosts: undefined,
+  });
+
+  const [loanFormModel, setLoanFormModel] = useState<
+    Record<"loanDuration" | "monthlyLoanPayment" | "salesTax" | "upfrontCosts", number | undefined>
+  >({
+    loanDuration: undefined,
+    monthlyLoanPayment: undefined,
+    salesTax: undefined,
+    upfrontCosts: undefined,
+  });
+
+  const [leaseFormModel, setLeaseFormModel] = useState<
+    Record<
+      "investmentReturn" | "leaseDuration" | "monthlyLeasePrice" | "residualPrice" | "salesTax",
+      number | undefined
+    >
+  >({
+    investmentReturn: undefined,
+    leaseDuration: undefined,
+    monthlyLeasePrice: undefined,
+    residualPrice: undefined,
+    salesTax: undefined,
+  });
   const [totalCashCost, setTotalCashCost] = useState<number>();
-  const [monthlyLoanPayment, setMonthlyLoanPayment] = useState<number>();
-  const [loanDuration, setLoanDuration] = useState<number>();
-  const [monthlyLeasePrice, setMonthlyLeasePrice] = useState<number>();
-  const [salesTaxLease, setSalesTaxLease] = useState<number>();
-  const [leaseDuration, setLeaseDuration] = useState<number>();
-  const [residualPrice, setResidualPrice] = useState<number>();
-  const [investmentReturn, setInvestmentReturn] = useState<number>();
   const [upfrontPayment, setUpfrontPayment] = useState<number>();
   const [taxesAndFees, setTaxesAndFees] = useState<number>();
   const [dropdownBtnActive, setDropdownBtnActive] = useState(false);
@@ -31,136 +51,33 @@ const Form: FunctionComponent = () => {
     new Promise((resolve, reject) => {
       if (
         (paymentMethod === "Loan" &&
-          (!monthlyLoanPayment ||
-            !salesTaxBuy ||
-            !loanDuration ||
-            !upfrontCosts ||
-            !salesTaxLease ||
-            !leaseDuration ||
-            !residualPrice ||
-            !investmentReturn ||
-            !upfrontPayment ||
-            !taxesAndFees)) ||
+          (loanFormModel.monthlyLoanPayment === undefined ||
+            loanFormModel.salesTax === undefined ||
+            loanFormModel.loanDuration === undefined ||
+            loanFormModel.upfrontCosts === undefined ||
+            leaseFormModel.salesTax === undefined ||
+            leaseFormModel.leaseDuration === undefined ||
+            leaseFormModel.residualPrice === undefined ||
+            leaseFormModel.investmentReturn === undefined ||
+            upfrontPayment === undefined ||
+            taxesAndFees === undefined)) ||
         (paymentMethod === "Cash" &&
-          (!salesPrice ||
-            !salesTaxBuy ||
-            !upfrontCosts ||
-            !monthlyLeasePrice ||
-            !salesTaxLease ||
-            !leaseDuration ||
-            !residualPrice ||
-            !investmentReturn ||
-            !upfrontPayment ||
-            !taxesAndFees))
+          (cashFormModel.salesPrice === undefined ||
+            cashFormModel.salesTax === undefined ||
+            cashFormModel.upfrontCosts === undefined ||
+            leaseFormModel.monthlyLeasePrice === undefined ||
+            leaseFormModel.salesTax === undefined ||
+            leaseFormModel.leaseDuration === undefined ||
+            leaseFormModel.residualPrice === undefined ||
+            leaseFormModel.investmentReturn === undefined ||
+            upfrontPayment === undefined ||
+            taxesAndFees === undefined))
       ) {
         reject({ message: "Fill in the goddamn form will ya" });
       } else {
         resolve({ message: "Success" });
       }
     });
-
-  const cashParameters = [
-    {
-      label: "Sales Price:",
-      name: "salesPrice",
-      changeHandler: setSalesPrice,
-      prefix: "$",
-      suffix: "",
-      value: salesPrice,
-    },
-    {
-      label: "Sales Tax:",
-      name: "salesTax",
-      changeHandler: setSalesTaxBuy,
-      prefix: "",
-      suffix: "%",
-      value: salesTaxBuy,
-    },
-    {
-      label: "Upfront Costs:",
-      name: "upfrontCosts",
-      changeHandler: setUpfrontCosts,
-      prefix: "$",
-      suffix: "",
-      value: upfrontCosts,
-    },
-  ];
-  const loanParameters = [
-    {
-      label: "Monthly Loan Payment:",
-      name: "monthlyLoanPayment",
-      changeHandler: setMonthlyLoanPayment,
-      prefix: "$",
-      suffix: "",
-      value: monthlyLoanPayment,
-    },
-    {
-      label: "Loan Duration:",
-      name: "loanDuration",
-      changeHandler: setLoanDuration,
-      prefix: "",
-      suffix: " months",
-      value: loanDuration,
-    },
-    {
-      label: "Sales Tax:",
-      name: "salesTax",
-      changeHandler: setSalesTaxBuy,
-      prefix: "",
-      suffix: "%",
-      value: salesTaxBuy,
-    },
-    {
-      label: "Down Payment:",
-      name: "upfrontcosts",
-      changeHandler: setUpfrontCosts,
-      prefix: "$",
-      suffix: "",
-      value: upfrontCosts,
-    },
-  ];
-  const leaseParameters = [
-    {
-      label: "Monthly Lease Price:",
-      name: "monthlyLeasePrice",
-      changeHandler: setMonthlyLeasePrice,
-      prefix: "$",
-      suffix: "",
-      value: monthlyLeasePrice,
-    },
-    {
-      label: "Sales Tax:",
-      name: "salesTax",
-      changeHandler: setSalesTaxLease,
-      prefix: "",
-      suffix: "%",
-      value: salesTaxLease,
-    },
-    {
-      label: "Lease Duration:",
-      name: "leaseDuration",
-      changeHandler: setLeaseDuration,
-      prefix: "",
-      suffix: " months",
-      value: leaseDuration,
-    },
-    {
-      label: "Residual Price:",
-      name: "residualPrice",
-      changeHandler: setResidualPrice,
-      prefix: "$",
-      suffix: "",
-      value: residualPrice,
-    },
-    {
-      label: "Yearly Investment Return:",
-      name: "investmentReturn",
-      changeHandler: setInvestmentReturn,
-      prefix: "",
-      suffix: "%",
-      value: investmentReturn,
-    },
-  ];
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -176,8 +93,14 @@ const Form: FunctionComponent = () => {
             }, 5000)
           );
         }
-        if (salesPrice !== undefined && salesTaxBuy !== undefined && upfrontCosts !== undefined) {
-          const cashCost = salesPrice * (1 + salesTaxBuy / 100) + upfrontCosts;
+        if (
+          cashFormModel.salesPrice !== undefined &&
+          cashFormModel.salesTax !== undefined &&
+          cashFormModel.upfrontCosts !== undefined
+        ) {
+          const cashCost =
+            cashFormModel.salesPrice * (1 + cashFormModel.salesTax / 100) +
+            cashFormModel.upfrontCosts;
           setTotalCashCost(cashCost);
         }
       })
@@ -222,12 +145,15 @@ const Form: FunctionComponent = () => {
               decimalScale={2}
               name={param.name}
               onValueChange={(values): void => {
-                param.changeHandler(values.floatValue);
+                setCashFormModel((model) => ({
+                  ...model,
+                  [param.name]: values.floatValue,
+                }));
               }}
               prefix={param.prefix}
               suffix={param.suffix}
               thousandSeparator={true}
-              value={param.value}
+              value={cashFormModel[param.name]}
             />
           </div>
         ))}
@@ -248,12 +174,15 @@ const Form: FunctionComponent = () => {
               decimalScale={2}
               name={param.name}
               onValueChange={(values): void => {
-                param.changeHandler(values.floatValue);
+                setLoanFormModel((model) => ({
+                  ...model,
+                  [param.name]: values.floatValue,
+                }));
               }}
               prefix={param.prefix}
               suffix={param.suffix}
               thousandSeparator={true}
-              value={param.value}
+              value={loanFormModel[param.name]}
             />
           </div>
         ))}
@@ -306,12 +235,15 @@ const Form: FunctionComponent = () => {
                     decimalScale={2}
                     name={param.name}
                     onValueChange={(values): void => {
-                      param.changeHandler(values.floatValue);
+                      setLeaseFormModel((model) => ({
+                        ...model,
+                        [param.name]: values.floatValue,
+                      }));
                     }}
                     prefix={param.prefix}
                     suffix={param.suffix}
                     thousandSeparator={true}
-                    value={param.value}
+                    value={leaseFormModel[param.name]}
                   />
                 </div>
               ))}
@@ -364,13 +296,13 @@ const Form: FunctionComponent = () => {
                   ? cashParameters.map((param, index) => (
                       <div className={styles.parameter} key={`${param.name}-${index}`}>
                         <span className={styles.bold}>{`${param.label}`}</span>
-                        {` ${param.prefix}${param.value ?? 0} ${param.suffix}`}
+                        {` ${param.prefix}${cashFormModel[param.name] ?? 0} ${param.suffix}`}
                       </div>
                     ))
                   : loanParameters.map((param, index) => (
                       <div className={styles.parameter} key={`${param.name}-${index}`}>
                         <span className={styles.bold}>{`${param.label}`}</span>
-                        {` ${param.prefix}${param.value ?? 0} ${param.suffix}`}
+                        {` ${param.prefix}${loanFormModel[param.name] ?? 0} ${param.suffix}`}
                       </div>
                     ))}
                 <div className={styles.parameter}>
@@ -385,7 +317,7 @@ const Form: FunctionComponent = () => {
                 {leaseParameters.map((param, index) => (
                   <div className={styles.parameter} key={`${param.name}-${index}`}>
                     <span className={styles.bold}>{`${param.label}`}</span>
-                    {` ${param.prefix}${param.value ?? 0} ${param.suffix}`}
+                    {` ${param.prefix}${leaseFormModel[param.name] ?? 0} ${param.suffix}`}
                   </div>
                 ))}
               </div>
