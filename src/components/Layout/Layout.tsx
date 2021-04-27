@@ -2,13 +2,13 @@ import type { FC, ReactElement } from "react";
 import { Fragment, useCallback, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CarForm from "../Forms/CarForm";
+import HouseForm from "../Forms/HouseForm";
 import Logo from "../images/monke.png";
 import { ReactComponent as Star } from "../images/star.svg";
+import SplitPage from "../SplitPage/SplitPage";
 import "./animation.css";
-import CarForm from "./CarForm";
-import HouseForm from "./HouseForm";
 import styles from "./Layout.module.css";
-import SplitPage from "./SplitPage";
 
 const Layout: FC = () => {
   const [chosenContent, setChosenContent] = useState("");

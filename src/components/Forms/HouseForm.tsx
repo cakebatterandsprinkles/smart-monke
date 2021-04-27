@@ -2,12 +2,12 @@ import type { FormEvent, FunctionComponent } from "react";
 import { useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
 import { toast } from "react-toastify";
-import { calculateBuyCost, calculateRentCost } from "../calculators/house";
-import { buyParameters, rentParameters } from "../data/houseForm";
+import { calculateBuyCost, calculateRentCost } from "../../calculators/house";
+import { buyParameters, rentParameters } from "../../data/houseForm";
 import { ReactComponent as HouseIcon } from "../images/house.svg";
+import Loader from "../Loader/Loader";
+import Results from "../Results/Results";
 import styles from "./Form.module.css";
-import Loader from "./Loader";
-import Results from "./Results";
 
 const Form: FunctionComponent = () => {
   const [rentFormModel, setRentFormModel] = useState<
