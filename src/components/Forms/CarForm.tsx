@@ -4,6 +4,7 @@ import NumberFormat from "react-number-format";
 import { toast } from "react-toastify";
 import { cashParameters, leaseParameters, loanParameters } from "../../data/carForm";
 import { ReactComponent as CarIcon } from "../../images/truck.svg";
+import { checkErrors } from "../../util/checkErrors";
 import Loader from "../Loader/Loader";
 import Results from "../Results/Results";
 import styles from "./Form.module.css";
@@ -47,42 +48,37 @@ const Form: FunctionComponent = () => {
   const [result, setResult] = useState<boolean>(false);
   const [timeoutHandle, setTimeoutHandle] = useState<NodeJS.Timeout | null>(null);
 
-  const checkErrors = (): Promise<{ message: string }> =>
-    new Promise((resolve, reject) => {
-      if (
-        (paymentMethod === "Loan" &&
-          (loanFormModel.monthlyLoanPayment === undefined ||
-            loanFormModel.salesTax === undefined ||
-            loanFormModel.loanDuration === undefined ||
-            loanFormModel.upfrontCosts === undefined ||
-            leaseFormModel.salesTax === undefined ||
-            leaseFormModel.leaseDuration === undefined ||
-            leaseFormModel.residualPrice === undefined ||
-            leaseFormModel.investmentReturn === undefined ||
-            upfrontPayment === undefined ||
-            taxesAndFees === undefined)) ||
-        (paymentMethod === "Cash" &&
-          (cashFormModel.salesPrice === undefined ||
-            cashFormModel.salesTax === undefined ||
-            cashFormModel.upfrontCosts === undefined ||
-            leaseFormModel.monthlyLeasePrice === undefined ||
-            leaseFormModel.salesTax === undefined ||
-            leaseFormModel.leaseDuration === undefined ||
-            leaseFormModel.residualPrice === undefined ||
-            leaseFormModel.investmentReturn === undefined ||
-            upfrontPayment === undefined ||
-            taxesAndFees === undefined))
-      ) {
-        reject({ message: "Fill in the goddamn form will ya" });
-      } else {
-        resolve({ message: "Success" });
-      }
-    });
-
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
-    checkErrors()
+    const validation =
+      paymentMethod === "Cash"
+        ? checkErrors(
+            cashFormModel.salesPrice,
+            cashFormModel.salesTax,
+            cashFormModel.upfrontCosts,
+            leaseFormModel.monthlyLeasePrice,
+            leaseFormModel.salesTax,
+            leaseFormModel.leaseDuration,
+            leaseFormModel.residualPrice,
+            leaseFormModel.investmentReturn,
+            upfrontPayment,
+            taxesAndFees
+          )
+        : checkErrors(
+            loanFormModel.monthlyLoanPayment,
+            loanFormModel.salesTax,
+            loanFormModel.loanDuration,
+            loanFormModel.upfrontCosts,
+            leaseFormModel.salesTax,
+            leaseFormModel.leaseDuration,
+            leaseFormModel.residualPrice,
+            leaseFormModel.investmentReturn,
+            upfrontPayment,
+            taxesAndFees
+          );
+
+    validation
       .then(() => {
         setLoader(true);
         if (!timeoutHandle) {

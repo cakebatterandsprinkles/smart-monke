@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { calculateBuyCost, calculateRentCost } from "../../calculators/house";
 import { buyParameters, rentParameters } from "../../data/houseForm";
 import { ReactComponent as HouseIcon } from "../../images/house.svg";
+import { checkErrors } from "../../util/checkErrors";
 import Loader from "../Loader/Loader";
 import Results from "../Results/Results";
 import styles from "./Form.module.css";
@@ -53,33 +54,24 @@ const Form: FunctionComponent = () => {
   const [result, setResult] = useState<boolean>(false);
   const [timeoutHandle, setTimeoutHandle] = useState<NodeJS.Timeout | null>(null);
 
-  const checkErrors = (): Promise<{ message: string }> =>
-    new Promise((resolve, reject) => {
-      if (
-        rentFormModel.monthlyRent === undefined ||
-        rentFormModel.leaseDuration === undefined ||
-        rentFormModel.rentersInsurance === undefined ||
-        rentFormModel.investmentReturn === undefined ||
-        buyFormModel.salesPrice === undefined ||
-        buyFormModel.homeInsurance === undefined ||
-        buyFormModel.propertyTax === undefined ||
-        buyFormModel.mortgageDuration === undefined ||
-        buyFormModel.mortgageRate === undefined ||
-        buyFormModel.downPayment === undefined ||
-        buyFormModel.hoa === undefined ||
-        buyFormModel.mortgageInsurance === undefined ||
-        buyFormModel.upkeepCosts === undefined ||
-        buyFormModel.closingCosts === undefined
-      ) {
-        reject({ message: "Fill in the goddamn form will ya" });
-      } else {
-        resolve({ message: "Success!" });
-      }
-    });
-
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    checkErrors()
+    checkErrors(
+      rentFormModel.monthlyRent,
+      rentFormModel.leaseDuration,
+      rentFormModel.rentersInsurance,
+      rentFormModel.investmentReturn,
+      buyFormModel.salesPrice,
+      buyFormModel.homeInsurance,
+      buyFormModel.propertyTax,
+      buyFormModel.mortgageDuration,
+      buyFormModel.mortgageRate,
+      buyFormModel.downPayment,
+      buyFormModel.hoa,
+      buyFormModel.mortgageInsurance,
+      buyFormModel.upkeepCosts,
+      buyFormModel.closingCosts
+    )
       .then(() => {
         setLoader(true);
         if (!timeoutHandle) {
