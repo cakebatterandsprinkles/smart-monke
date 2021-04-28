@@ -269,13 +269,15 @@ const Form: FunctionComponent = () => {
   };
 
   return (
-    <div className={styles.mainWrapper}>
-      <div className={styles.innerWrapper}>
-        <div className={styles.headingContainer}>
-          <HouseIcon className={styles.icon} />
-          <p className={styles.bannerHeading}>To rent or to buy?</p>
+    <div className={styles.houseBackground}>
+      <div className={styles.mainWrapper}>
+        <div className={styles.innerWrapper}>
+          <div className={styles.headingContainer}>
+            <HouseIcon className={styles.icon} />
+            <p className={styles.bannerHeading}>To rent or to buy?</p>
+          </div>
+          {renderContent()}
         </div>
-        {renderContent()}
       </div>
     </div>
   );

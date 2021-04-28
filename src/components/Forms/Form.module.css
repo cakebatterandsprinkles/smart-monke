@@ -1,3 +1,19 @@
+.carBackground {
+  min-height: 100%;
+  min-width: 100%;
+  background: url(../../images/luke-stackpoole-x2qSNIEZuEE-unsplash.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.houseBackground {
+  min-height: 100%;
+  min-width: 100%;
+  background: url(../../images/roam-in-color-RryFk4n-vOs-unsplash.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .mainWrapper {
   min-height: 100%;
   display: flex;
