@@ -1,6 +1,11 @@
 interface IRentParameter {
   label: string;
-  name: "investmentReturn" | "leaseDuration" | "monthlyRent" | "rentersInsurance";
+  name:
+    | "investmentReturn"
+    | "leaseDuration"
+    | "monthlyRent"
+    | "rentersInsurance"
+    | "yearlyIncrease";
   prefix: string;
   suffix: string;
 }
@@ -17,32 +22,39 @@ interface IBuyParameter {
     | "mortgageRate"
     | "propertyTax"
     | "salesPrice"
-    | "upkeepCosts";
+    | "upkeepCosts"
+    | "yearlyPriceIncrease";
   prefix: string;
   suffix: string;
 }
 
 export const rentParameters: IRentParameter[] = [
   {
-    label: "Monthly rent:",
+    label: "Monthly rent",
     name: "monthlyRent",
     prefix: "$",
     suffix: "",
   },
   {
-    label: "Lease Duration:",
+    label: "Lease Duration",
     name: "leaseDuration",
     prefix: "",
     suffix: " months",
   },
   {
-    label: "Renters insurance:",
+    label: "Renters insurance",
     name: "rentersInsurance",
     prefix: "$",
     suffix: "",
   },
   {
-    label: "Investment Return:",
+    label: "Yearly Rent Increase",
+    name: "yearlyIncrease",
+    prefix: "",
+    suffix: "%",
+  },
+  {
+    label: "Investment Return",
     name: "investmentReturn",
     prefix: "",
     suffix: "%",
@@ -51,49 +63,49 @@ export const rentParameters: IRentParameter[] = [
 
 export const buyParameters: IBuyParameter[] = [
   {
-    label: "Sales Price:",
+    label: "Sales Price",
     name: "salesPrice",
     prefix: "$",
     suffix: "",
   },
   {
-    label: "Home Insurance:",
+    label: "Home Insurance",
     name: "homeInsurance",
     prefix: "$",
     suffix: "",
   },
   {
-    label: "Property Tax:",
+    label: "Property Tax",
     name: "propertyTax",
     prefix: "$",
     suffix: "",
   },
   {
-    label: "Mortgage Duration:",
+    label: "Mortgage Duration",
     name: "mortgageDuration",
     prefix: "",
     suffix: " months",
   },
   {
-    label: "Mortgage Rate:",
+    label: "Mortgage Rate",
     name: "mortgageRate",
     prefix: "",
     suffix: " %",
   },
   {
-    label: "Down Payment:",
+    label: "Down Payment",
     name: "downPayment",
     prefix: "$",
     suffix: "",
   },
   {
-    label: "Mortgage Insurance:",
+    label: "Mortgage Insurance",
     name: "mortgageInsurance",
     prefix: "$",
     suffix: "",
   },
   {
-    label: "Monthly HOA Payments:",
+    label: "Monthly HOA Payments",
     name: "hoa",
     prefix: "$",
     suffix: "",
@@ -105,9 +117,15 @@ export const buyParameters: IBuyParameter[] = [
     suffix: "",
   },
   {
-    label: "Closing Costs:",
+    label: "Closing Costs",
     name: "closingCosts",
     prefix: "$",
     suffix: "",
+  },
+  {
+    label: "Yearly Value Increase",
+    name: "yearlyPriceIncrease",
+    prefix: "",
+    suffix: "%",
   },
 ];

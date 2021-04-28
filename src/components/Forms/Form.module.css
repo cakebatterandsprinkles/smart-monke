@@ -220,6 +220,16 @@
 
 .parameter {
   margin: 0.2rem 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.parameter:last-child {
+  font-weight: bold;
+  color: var(--darkgray);
+  border-top: 1px solid var(--midgray);
+  margin-top: 0.5rem;
+  padding-top: 0.3rem;
 }
 
 .parameterHeader {

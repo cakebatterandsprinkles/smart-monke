@@ -2,6 +2,7 @@ import type { FormEvent, FunctionComponent } from "react";
 import { useCallback, useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
 import { toast } from "react-toastify";
+import { calculateCashCost, calculateLeaseCost, calculateLoanCost } from "../../calculators/car";
 import { cashParameters, leaseParameters, loanParameters } from "../../data/carForm";
 import { ReactComponent as CarIcon } from "../../images/truck.svg";
 import { checkErrors } from "../../util/checkErrors";
@@ -29,7 +30,13 @@ const Form: FunctionComponent = () => {
 
   const [leaseFormModel, setLeaseFormModel] = useState<
     Record<
-      "investmentReturn" | "leaseDuration" | "monthlyLeasePrice" | "residualPrice" | "salesTax",
+      | "investmentReturn"
+      | "leaseDuration"
+      | "monthlyLeasePrice"
+      | "residualPrice"
+      | "salesTax"
+      | "taxesAndFees"
+      | "upfrontPayment",
       number | undefined
     >
   >({
@@ -38,10 +45,9 @@ const Form: FunctionComponent = () => {
     monthlyLeasePrice: undefined,
     residualPrice: undefined,
     salesTax: undefined,
+    upfrontPayment: undefined,
+    taxesAndFees: undefined,
   });
-  const [totalCashCost, setTotalCashCost] = useState<number>();
-  const [upfrontPayment, setUpfrontPayment] = useState<number>();
-  const [taxesAndFees, setTaxesAndFees] = useState<number>();
   const [dropdownBtnActive, setDropdownBtnActive] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("Cash");
   const [loader, setLoader] = useState<boolean>(false);
@@ -62,8 +68,8 @@ const Form: FunctionComponent = () => {
             leaseFormModel.leaseDuration,
             leaseFormModel.residualPrice,
             leaseFormModel.investmentReturn,
-            upfrontPayment,
-            taxesAndFees
+            leaseFormModel.upfrontPayment,
+            leaseFormModel.taxesAndFees
           )
         : checkErrors(
             loanFormModel.monthlyLoanPayment,
@@ -74,8 +80,8 @@ const Form: FunctionComponent = () => {
             leaseFormModel.leaseDuration,
             leaseFormModel.residualPrice,
             leaseFormModel.investmentReturn,
-            upfrontPayment,
-            taxesAndFees
+            leaseFormModel.upfrontPayment,
+            leaseFormModel.taxesAndFees
           );
 
     validation
@@ -86,18 +92,9 @@ const Form: FunctionComponent = () => {
             setTimeout(() => {
               setLoader(false);
               setResult(true);
-            }, 5000)
+              setTimeoutHandle(null);
+            }, 3000)
           );
-        }
-        if (
-          cashFormModel.salesPrice !== undefined &&
-          cashFormModel.salesTax !== undefined &&
-          cashFormModel.upfrontCosts !== undefined
-        ) {
-          const cashCost =
-            cashFormModel.salesPrice * (1 + cashFormModel.salesTax / 100) +
-            cashFormModel.upfrontCosts;
-          setTotalCashCost(cashCost);
         }
       })
       .catch(({ message }: { message: string }) => {
@@ -110,6 +107,13 @@ const Form: FunctionComponent = () => {
       if (timeoutHandle) clearTimeout(timeoutHandle);
     };
   }, [timeoutHandle]);
+
+  const currencyFormatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  });
 
   const handleDropdownClick = (e: React.MouseEvent<HTMLElement, MouseEvent>): void => {
     dropdownBtnActive ? setDropdownBtnActive(false) : setDropdownBtnActive(true);
@@ -153,9 +157,6 @@ const Form: FunctionComponent = () => {
             />
           </div>
         ))}
-        <div className={styles.cashCostDiv}>
-          Total Cash Cost: ${totalCashCost ? totalCashCost.toLocaleString() : 0}
-        </div>
       </div>
     );
   };
@@ -182,7 +183,6 @@ const Form: FunctionComponent = () => {
             />
           </div>
         ))}
-        <div className={styles.cashCostDiv}>Total Loan Cost:</div>
       </div>
     );
   };
@@ -243,33 +243,6 @@ const Form: FunctionComponent = () => {
                   />
                 </div>
               ))}
-              <div className={styles.wrapper}>Upfront Costs</div>
-              <div className={styles.inputField}>
-                <label htmlFor="upfrontPayment">Upfront Payment:</label>
-                <NumberFormat
-                  decimalScale={2}
-                  name="upfrontPayment"
-                  onValueChange={(values): void => {
-                    setUpfrontPayment(values.floatValue);
-                  }}
-                  prefix="$"
-                  thousandSeparator={true}
-                  value={upfrontPayment}
-                />{" "}
-              </div>
-              <div className={styles.inputField}>
-                <label htmlFor="taxesAndFees">Taxes & Fees:</label>
-                <NumberFormat
-                  decimalScale={2}
-                  name="taxesAndFees"
-                  onValueChange={(values): void => {
-                    setTaxesAndFees(values.floatValue);
-                  }}
-                  prefix="$"
-                  thousandSeparator={true}
-                  value={taxesAndFees}
-                />{" "}
-              </div>
             </div>
             <div className={styles.buttonContainer}>
               <button type="submit">Calculate</button>
@@ -282,6 +255,32 @@ const Form: FunctionComponent = () => {
       return <Loader />;
     }
     if (result) {
+      const cashCost = calculateCashCost({
+        salesPrice: cashFormModel.salesPrice ?? 0,
+        salesTax: cashFormModel.salesTax ?? 0,
+        upfrontCost: cashFormModel.upfrontCosts ?? 0,
+      });
+
+      const loanCost = calculateLoanCost({
+        loanDuration: loanFormModel.loanDuration ?? 0,
+        monthlyLoanPayment: loanFormModel.monthlyLoanPayment ?? 0,
+        salesTax: loanFormModel.salesTax ?? 0,
+        downPayment: loanFormModel.upfrontCosts ?? 0,
+        yearlyReturn: leaseFormModel.investmentReturn ?? 0,
+      });
+
+      const leaseCost = calculateLeaseCost({
+        salesTax: leaseFormModel.salesTax ?? 0,
+        yearlyReturn: leaseFormModel.investmentReturn ?? 0,
+        leaseMonths: leaseFormModel.leaseDuration ?? 0,
+        monthlyLeasePrice: leaseFormModel.monthlyLeasePrice ?? 0,
+        residualPrice: leaseFormModel.residualPrice ?? 0,
+        taxesAndFees: leaseFormModel.taxesAndFees ?? 0,
+        upfrontPayment: leaseFormModel.upfrontPayment ?? 0,
+      });
+
+      const buyCost = paymentMethod === "Cash" ? cashCost : loanCost;
+
       return (
         <div className={styles.mainResultsContainer}>
           <div className={styles.parameterWrapper}>
@@ -291,19 +290,27 @@ const Form: FunctionComponent = () => {
                 {paymentMethod === "Cash"
                   ? cashParameters.map((param, index) => (
                       <div className={styles.parameter} key={`${param.name}-${index}`}>
-                        <span className={styles.bold}>{`${param.label}`}</span>
-                        {` ${param.prefix}${cashFormModel[param.name] ?? 0} ${param.suffix}`}
+                        <span className={styles.bold}>{param.label}</span>
+                        <span>
+                          {param.prefix === "$"
+                            ? currencyFormatter.format(cashFormModel[param.name] ?? 0)
+                            : `${param.prefix}${cashFormModel[param.name] ?? 0} ${param.suffix}`}
+                        </span>
                       </div>
                     ))
                   : loanParameters.map((param, index) => (
                       <div className={styles.parameter} key={`${param.name}-${index}`}>
                         <span className={styles.bold}>{`${param.label}`}</span>
-                        {` ${param.prefix}${loanFormModel[param.name] ?? 0} ${param.suffix}`}
+                        <span>
+                          {param.prefix === "$"
+                            ? currencyFormatter.format(loanFormModel[param.name] ?? 0)
+                            : `${param.prefix}${loanFormModel[param.name] ?? 0} ${param.suffix}`}
+                        </span>
                       </div>
                     ))}
                 <div className={styles.parameter}>
-                  <span className={styles.bold}>Total Cash Cost:</span>
-                  {` ${totalCashCost ?? 0}`}
+                  <span className={styles.bold}>TOTAL COST</span>
+                  <span>{currencyFormatter.format(buyCost)}</span>
                 </div>
               </div>
             </div>
@@ -313,13 +320,39 @@ const Form: FunctionComponent = () => {
                 {leaseParameters.map((param, index) => (
                   <div className={styles.parameter} key={`${param.name}-${index}`}>
                     <span className={styles.bold}>{`${param.label}`}</span>
-                    {` ${param.prefix}${leaseFormModel[param.name] ?? 0} ${param.suffix}`}
+                    <span>
+                      {param.prefix === "$"
+                        ? currencyFormatter.format(leaseFormModel[param.name] ?? 0)
+                        : `${param.prefix}${leaseFormModel[param.name] ?? 0} ${param.suffix}`}
+                    </span>
                   </div>
                 ))}
+                <div className={styles.parameter}>
+                  <span className={styles.bold}>TOTAL COST</span>
+                  <span>{currencyFormatter.format(leaseCost)}</span>
+                </div>
               </div>
             </div>
           </div>
-          <Results>hi</Results>
+          <Results>
+            {" "}
+            Buying this car is{" "}
+            <span className={styles.bold}>
+              {Math.abs((100 * buyCost) / leaseCost - 100).toFixed(2)}%{" "}
+              {buyCost > leaseCost ? "more expensive" : "cheaper"}
+            </span>{" "}
+            than leasing it.
+          </Results>
+
+          <div className={styles.buttonContainer}>
+            <button
+              onClick={(): void => {
+                setResult(false);
+              }}
+            >
+              Change Parameters
+            </button>
+          </div>
         </div>
       );
     }

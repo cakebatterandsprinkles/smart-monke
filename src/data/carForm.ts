@@ -14,26 +14,33 @@ interface ILoanParameter {
 
 interface ILeaseParameter {
   label: string;
-  name: "investmentReturn" | "leaseDuration" | "monthlyLeasePrice" | "residualPrice" | "salesTax";
+  name:
+    | "investmentReturn"
+    | "leaseDuration"
+    | "monthlyLeasePrice"
+    | "residualPrice"
+    | "salesTax"
+    | "taxesAndFees"
+    | "upfrontPayment";
   prefix: string;
   suffix: string;
 }
 
 export const cashParameters: ICashParameter[] = [
   {
-    label: "Sales Price:",
+    label: "Sales Price",
     name: "salesPrice",
     prefix: "$",
     suffix: "",
   },
   {
-    label: "Sales Tax:",
+    label: "Sales Tax",
     name: "salesTax",
     prefix: "",
     suffix: "%",
   },
   {
-    label: "Upfront Costs:",
+    label: "Upfront Costs",
     name: "upfrontCosts",
     prefix: "$",
     suffix: "",
@@ -42,25 +49,25 @@ export const cashParameters: ICashParameter[] = [
 
 export const loanParameters: ILoanParameter[] = [
   {
-    label: "Monthly Loan Payment:",
+    label: "Monthly Loan Payment",
     name: "monthlyLoanPayment",
     prefix: "$",
     suffix: "",
   },
   {
-    label: "Loan Duration:",
+    label: "Loan Duration",
     name: "loanDuration",
     prefix: "",
     suffix: " months",
   },
   {
-    label: "Sales Tax:",
+    label: "Sales Tax",
     name: "salesTax",
     prefix: "",
     suffix: "%",
   },
   {
-    label: "Down Payment:",
+    label: "Down Payment",
     name: "upfrontCosts",
     prefix: "$",
     suffix: "",
@@ -69,33 +76,46 @@ export const loanParameters: ILoanParameter[] = [
 
 export const leaseParameters: ILeaseParameter[] = [
   {
-    label: "Monthly Lease Price:",
+    label: "Monthly Lease Price",
     name: "monthlyLeasePrice",
     prefix: "$",
     suffix: "",
   },
   {
-    label: "Sales Tax:",
+    label: "Sales Tax",
     name: "salesTax",
     prefix: "",
     suffix: "%",
   },
   {
-    label: "Lease Duration:",
+    label: "Lease Duration",
     name: "leaseDuration",
     prefix: "",
     suffix: " months",
   },
   {
-    label: "Residual Price:",
+    label: "Residual Price",
     name: "residualPrice",
     prefix: "$",
     suffix: "",
   },
   {
-    label: "Yearly Investment Return:",
+    label: "Yearly Investment Return",
     name: "investmentReturn",
     prefix: "",
     suffix: "%",
+  },
+
+  {
+    label: "Upfront Payment",
+    name: "upfrontPayment",
+    prefix: "$",
+    suffix: "",
+  },
+  {
+    label: "Taxes and Fees",
+    name: "taxesAndFees",
+    prefix: "$",
+    suffix: "",
   },
 ];
