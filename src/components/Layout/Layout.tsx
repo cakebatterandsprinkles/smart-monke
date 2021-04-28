@@ -37,7 +37,7 @@ const Layout: FC = () => {
       <div className={styles.footer}>
         <Star className={styles.icon} />
         <p className={styles.linkTitle}>Made by:</p>{" "}
-        <a className={styles.link} href="">
+        <a className={styles.link} href="https://innermonke.com">
           InnerMonke LLC
         </a>
       </div>
