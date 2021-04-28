@@ -75,12 +75,13 @@ export const calculateBuyCost = ({
     monthlyMortgagePayments + monthlyHoaPayments + mortgageInsurance + yearlyPayments / 12;
 
   totalCost +=
-    ((Math.pow(monthlyReturn, mortgageDuration) - 1) / (monthlyReturn - 1)) * monthlyPayments;
+    ((Math.pow(1 / monthlyReturn, mortgageDuration) - 1) / (1 / monthlyReturn - 1)) *
+    monthlyPayments;
 
   const homeValue =
     salesPrice *
     Math.pow(1 + yearlyPriceIncrease / 100, leaseMonths / 12) *
-    ((Math.pow(monthlyReturn, leaseMonths) - 1) / (monthlyReturn - 1));
+    Math.pow(1 / monthlyReturn, leaseMonths);
 
   return totalCost - homeValue;
 };
