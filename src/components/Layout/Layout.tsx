@@ -1,6 +1,6 @@
 import type { FC, ReactElement } from "react";
 import { useCallback } from "react";
-import { Link, Route, Switch } from "react-router-dom";
+import { Link, Redirect, Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Logo from "../../images/monke.png";
@@ -18,6 +18,7 @@ const Layout: FC = () => {
         <Route component={HouseForm} exact path="/rent-or-buy" />
         <Route component={CarForm} exact path="/buy-or-lease" />
         <Route component={Landing} exact path="/" />
+        <Redirect to="/" />
       </Switch>
     );
   }, []);
