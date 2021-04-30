@@ -9,7 +9,7 @@ const Form: FunctionComponent = () => {
   const [salesTaxBuy, setSalesTaxBuy] = useState<number>();
   const [upfrontCosts, setUpfrontCosts] = useState<number>();
   const [totalCashCost, setTotalCashCost] = useState<number>();
-  const [loanInterest, setLoanInterest] = useState<number>();
+  const [monthlyLoanPayment, setMonthlyLoanPayment] = useState<number>();
   const [loanDuration, setLoanDuration] = useState<number>();
   const [monthlyLeasePrice, setMonthlyLeasePrice] = useState<number>();
   const [salesTaxLease, setSalesTaxLease] = useState<number>();
@@ -44,13 +44,25 @@ const Form: FunctionComponent = () => {
       console.groupEnd();
     }
     console.group("LEASE");
-    console.log("Monthly Lease Price: $ ", salesTaxBuy?.toLocaleString());
+    console.log("Monthly Lease Price: $ ", monthlyLeasePrice?.toLocaleString());
     console.log("Sales Tax: %", salesTaxLease);
     console.log("Lease Duration:", leaseDuration, "months");
     console.log("Residual Price: $ ", residualPrice?.toLocaleString());
     console.log("Investment Return: $ ", investmentReturn?.toLocaleString());
     console.log("Upfront Payment: $ ", upfrontPayment?.toLocaleString());
     console.log("Taxes and Fees: $ ", taxesAndFees?.toLocaleString());
+    console.log(
+      "TOTAL LEASE COST: $"
+      // calculateLeaseCost({
+      //   leaseMonths: leaseDuration ?? 0,
+      //   monthlyLeasePrice: monthlyLeasePrice ?? 0,
+      //   residualPrice: residualPrice ?? 0,
+      //   salesTax: salesTaxLease ?? 0,
+      //   upfrontPayment: upfrontCosts ?? 0,
+      //   taxesAndFees: taxesAndFees ?? 0,
+      //   yearlyReturn: investmentReturn ?? 0,
+      // })
+    );
     console.groupEnd();
 
     if (salesPrice !== undefined && salesTaxBuy !== undefined && upfrontCosts !== undefined) {
@@ -132,22 +144,22 @@ const Form: FunctionComponent = () => {
     return (
       <div>
         <div className={styles.inputField}>
-          <label htmlFor="loanInterest">Loan Interest:</label>
+          <label htmlFor="loanInterest">Monthly Loan Payment:</label>
           <NumberFormat
             decimalScale={2}
             name="loanInterest"
             onValueChange={(values): void => {
-              setLoanInterest(values.floatValue);
+              setMonthlyLoanPayment(values.floatValue);
             }}
             prefix="$"
             thousandSeparator={true}
-            value={loanInterest}
+            value={monthlyLoanPayment}
           />{" "}
         </div>
         <div className={styles.inputField}>
           <label htmlFor="loanDuration">Loan Duration:</label>
           <NumberFormat
-            decimalScale={2}
+            decimalScale={0}
             name="loanDuration"
             onValueChange={(values): void => {
               setLoanDuration(values.floatValue);
@@ -157,6 +169,33 @@ const Form: FunctionComponent = () => {
             value={loanDuration}
           />{" "}
         </div>
+        <div className={styles.inputField}>
+          <label htmlFor="salesTax">Sales Tax:</label>
+          <NumberFormat
+            decimalScale={2}
+            name="salesTax"
+            onValueChange={(values): void => {
+              setSalesTaxBuy(values.floatValue);
+            }}
+            suffix="%"
+            thousandSeparator={true}
+            value={salesTaxBuy}
+          />{" "}
+        </div>
+        <div className={styles.inputField}>
+          <label htmlFor="upfrontCosts">Down Payment:</label>
+          <NumberFormat
+            decimalScale={2}
+            name="upfrontCosts"
+            onValueChange={(values): void => {
+              setUpfrontCosts(values.floatValue);
+            }}
+            prefix="$"
+            thousandSeparator={true}
+            value={upfrontCosts}
+          />{" "}
+        </div>
+        <div className={styles.cashCostDiv}>Total Loan Cost:</div>
       </div>
     );
   };
@@ -268,7 +307,7 @@ const Form: FunctionComponent = () => {
                   onValueChange={(values): void => {
                     setInvestmentReturn(values.floatValue);
                   }}
-                  prefix="$"
+                  suffix="%"
                   thousandSeparator={true}
                   value={investmentReturn}
                 />{" "}

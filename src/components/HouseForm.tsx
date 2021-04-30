@@ -1,8 +1,10 @@
 import type { FormEvent, FunctionComponent } from "react";
-import { useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
 import { ReactComponent as HouseIcon } from "../images/house.svg";
 import styles from "./Form.module.css";
+import Loader from "./Loader";
+import Results from "./Results";
 
 const Form: FunctionComponent = () => {
   const [monthlyRent, setMonthlyRent] = useState<number>();
@@ -20,19 +22,21 @@ const Form: FunctionComponent = () => {
   const [hoa, setHoa] = useState<number>();
   const [upkeepCosts, setUpkeepCosts] = useState<number>();
   const [closingCosts, setClosingCosts] = useState<number>();
+  const [loader, setLoader] = useState<boolean>(false);
+  const [result, setResult] = useState<boolean>(false);
+  const [timeoutHandle, setTimeoutHandle] = useState<NodeJS.Timeout | null>(null);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
-    // strict null checks need us to check if inputEl and current exist.
-    // but once current exists, it is of type HTMLInputElement, thus it
-    // has the method focus! ✅
     e.preventDefault();
-    console.group("RENT");
-    console.log("Monthly Rent: $", monthlyRent?.toLocaleString());
-    console.log("Lease Duration: ", leaseDuration?.toLocaleString(), " months");
-    console.log("Renters insurance: $", rentersInsurance);
-    console.log("Investment Return: $", investmentReturn?.toLocaleString());
-    console.log("TOTAL CASH COST: $", totalCashCost?.toLocaleString());
-    console.groupEnd();
+    setLoader(true);
+    if (!timeoutHandle) {
+      setTimeoutHandle(
+        setTimeout(() => {
+          setLoader(false);
+          setResult(true);
+        }, 5000)
+      );
+    }
     console.group("BUY");
     // console.log("Monthly Lease Price: $ ", salesTaxBuy?.toLocaleString());
     // console.log("Sales Tax: %", salesTaxLease);
@@ -45,6 +49,12 @@ const Form: FunctionComponent = () => {
     setTotalCashCost(0);
     setMortgageInsurance(0);
   };
+
+  useEffect(() => {
+    return (): void => {
+      if (timeoutHandle) clearTimeout(timeoutHandle);
+    };
+  }, [timeoutHandle]);
 
   const rentParameters = [
     {
@@ -164,13 +174,9 @@ const Form: FunctionComponent = () => {
     },
   ];
 
-  return (
-    <div className={styles.mainWrapper}>
-      <div className={styles.innerWrapper}>
-        <div className={styles.headingContainer}>
-          <HouseIcon className={styles.icon} />
-          <p className={styles.bannerHeading}>To rent or to buy?</p>
-        </div>
+  const renderContent = (): JSX.Element => {
+    if (!loader && !result) {
+      return (
         <form className={styles.mainContainer} onSubmit={handleSubmit}>
           <div className={styles.formContainer}>
             <p className={styles.mainHeader}>RENT</p>
@@ -183,7 +189,7 @@ const Form: FunctionComponent = () => {
                       decimalScale={2}
                       name={param.name}
                       onValueChange={(values): void => {
-                        param.changeHandler(values.floatValue);
+                        param.changeHandler(values.floatValue ?? 0);
                       }}
                       prefix={param.prefix ? param.prefix : ""}
                       suffix={param.suffix ? param.suffix : ""}
@@ -227,6 +233,51 @@ const Form: FunctionComponent = () => {
             </div>
           </div>
         </form>
+      );
+    }
+    if (loader && !result) {
+      return <Loader />;
+    }
+    if (result) {
+      return (
+        <Fragment>
+          <div className={styles.parameterWrapper}>
+            <div className={styles.formContainer}>
+              {rentParameters.map((param, index) => (
+                <div className={styles.parameter} key={`${param.name}-${index}`}>
+                  <span className={styles.bold}>{`${param.label}`}</span>
+                  {`${param.prefix} ${param.value ?? 0} ${param.suffix}`}
+                </div>
+              ))}
+              <div className={styles.parameter}>
+                <span className={styles.bold}>Total Cash Cost:</span>
+                {totalCashCost}
+              </div>
+            </div>
+            <div className={styles.formContainer}>
+              {buyParameters.map((param, index) => (
+                <div className={styles.parameter} key={`${param.name}-${index}`}>
+                  <span className={styles.bold}>{`${param.label}`}</span>
+                  {` ${param.prefix}${param.value ?? 0} ${param.suffix}`}
+                </div>
+              ))}
+            </div>
+          </div>
+          <Results />
+        </Fragment>
+      );
+    }
+    return <div></div>;
+  };
+
+  return (
+    <div className={styles.mainWrapper}>
+      <div className={styles.innerWrapper}>
+        <div className={styles.headingContainer}>
+          <HouseIcon className={styles.icon} />
+          <p className={styles.bannerHeading}>To rent or to buy?</p>
+        </div>
+        {renderContent()}
       </div>
     </div>
   );

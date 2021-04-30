@@ -199,6 +199,19 @@
   background: var(--midgray);
 }
 
+.bold {
+  font-weight: bold;
+}
+
+.parameter {
+  margin: 0.2rem 0;
+}
+
+.parameterWrapper {
+  display: flex;
+  margin-top: 0.5rem;
+}
+
 @media (max-width: 900px) {
   .mainContainer {
     flex-direction: column;
