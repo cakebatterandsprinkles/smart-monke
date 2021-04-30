@@ -45,7 +45,7 @@ const Form: FunctionComponent = () => {
         !upkeepCosts ||
         !closingCosts
       ) {
-        reject({ message: "Fill in the form will ya" });
+        reject({ message: "Fill in the goddamn form will ya" });
       } else {
         resolve({ message: "Success" });
       }
