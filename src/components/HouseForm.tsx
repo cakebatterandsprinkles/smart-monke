@@ -1,6 +1,7 @@
 import type { FormEvent, FunctionComponent } from "react";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
+import { toast } from "react-toastify";
 import { ReactComponent as HouseIcon } from "../images/house.svg";
 import styles from "./Form.module.css";
 import Loader from "./Loader";
@@ -26,28 +27,48 @@ const Form: FunctionComponent = () => {
   const [result, setResult] = useState<boolean>(false);
   const [timeoutHandle, setTimeoutHandle] = useState<NodeJS.Timeout | null>(null);
 
+  const checkErrors = (): Promise<{ message: string }> =>
+    new Promise((resolve, reject) => {
+      if (
+        !monthlyRent ||
+        !leaseDuration ||
+        !rentersInsurance ||
+        !investmentReturn ||
+        !salesPrice ||
+        !homeInsurance ||
+        !propertyTax ||
+        !mortgageDuration ||
+        !mortgageRate ||
+        !downPayment ||
+        !hoa ||
+        !mortgageInsurance ||
+        !upkeepCosts ||
+        !closingCosts
+      ) {
+        reject({ message: "Fill in the form will ya" });
+      } else {
+        resolve({ message: "Success" });
+      }
+    });
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    setLoader(true);
-    if (!timeoutHandle) {
-      setTimeoutHandle(
-        setTimeout(() => {
-          setLoader(false);
-          setResult(true);
-        }, 5000)
-      );
-    }
-    console.group("BUY");
-    // console.log("Monthly Lease Price: $ ", salesTaxBuy?.toLocaleString());
-    // console.log("Sales Tax: %", salesTaxLease);
-    // console.log("Lease Duration:", leaseDuration, "months");
-    // console.log("Residual Price: $ ", residualPrice?.toLocaleString());
-    // console.log("Investment Return: $ ", investmentReturn?.toLocaleString());
-    // console.log("Upfront Payment: $ ", upfrontPayment?.toLocaleString());
-    // console.log("Taxes and Fees: $ ", taxesAndFees?.toLocaleString());
-    console.groupEnd();
-    setTotalCashCost(0);
-    setMortgageInsurance(0);
+    checkErrors()
+      .then(() => {
+        setLoader(true);
+        if (!timeoutHandle) {
+          setTimeoutHandle(
+            setTimeout(() => {
+              setLoader(false);
+              setResult(true);
+            }, 5000)
+          );
+        }
+        setTotalCashCost(12);
+      })
+      .catch(({ message }: { message: string }) => {
+        toast.dark(message);
+      });
   };
 
   useEffect(() => {
@@ -240,31 +261,37 @@ const Form: FunctionComponent = () => {
     }
     if (result) {
       return (
-        <Fragment>
+        <div className={styles.mainResultsContainer}>
           <div className={styles.parameterWrapper}>
             <div className={styles.formContainer}>
-              {rentParameters.map((param, index) => (
-                <div className={styles.parameter} key={`${param.name}-${index}`}>
-                  <span className={styles.bold}>{`${param.label}`}</span>
-                  {`${param.prefix} ${param.value ?? 0} ${param.suffix}`}
+              <p className={styles.parameterHeader}>RENT</p>
+              <div className={styles.parameterContainer}>
+                {rentParameters.map((param, index) => (
+                  <div className={styles.parameter} key={`${param.name}-${index}`}>
+                    <span className={styles.bold}>{`${param.label}`}</span>
+                    {` ${param.prefix}${param.value ?? 0} ${param.suffix}`}
+                  </div>
+                ))}
+                <div className={styles.parameter}>
+                  <span className={styles.bold}>Total Cash Cost:</span>
+                  {` ${totalCashCost ?? 0}`}
                 </div>
-              ))}
-              <div className={styles.parameter}>
-                <span className={styles.bold}>Total Cash Cost:</span>
-                {totalCashCost}
               </div>
             </div>
             <div className={styles.formContainer}>
-              {buyParameters.map((param, index) => (
-                <div className={styles.parameter} key={`${param.name}-${index}`}>
-                  <span className={styles.bold}>{`${param.label}`}</span>
-                  {` ${param.prefix}${param.value ?? 0} ${param.suffix}`}
-                </div>
-              ))}
+              <p className={styles.parameterHeader}>BUY</p>
+              <div className={styles.parameterContainer}>
+                {buyParameters.map((param, index) => (
+                  <div className={styles.parameter} key={`${param.name}-${index}`}>
+                    <span className={styles.bold}>{`${param.label}`}</span>
+                    {` ${param.prefix}${param.value ?? 0} ${param.suffix}`}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
           <Results />
-        </Fragment>
+        </div>
       );
     }
     return <div></div>;

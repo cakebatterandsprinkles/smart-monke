@@ -9,6 +9,7 @@
 .innerWrapper {
   width: 800px;
   background-color: var(--offwhite);
+  height: 75vh;
   opacity: 90%;
   padding: 2rem;
   border-radius: 20px;
@@ -19,6 +20,20 @@
   justify-content: space-between;
   width: 100%;
   font-family: var(--regularFont);
+}
+
+.mainResultsContainer {
+  display: flex;
+  flex-direction: column;
+  margin: 0 3rem;
+}
+
+.mainResultsHeader {
+  text-align: center;
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+  font-family: var(--monospaceFont);
+  color: var(--darkolivegreen);
 }
 
 .headingContainer {
@@ -207,9 +222,24 @@
   margin: 0.2rem 0;
 }
 
+.parameterHeader {
+  margin: 0.75rem 1rem;
+  font-family: var(--monospaceFont);
+  font-size: 1.1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dotted var(--black);
+  text-align: center;
+}
+
 .parameterWrapper {
   display: flex;
+  justify-content: center;
   margin-top: 0.5rem;
+}
+
+.parameterContainer {
+  margin: 0.25rem 1rem;
+  font-size: 0.85rem;
 }
 
 @media (max-width: 900px) {
@@ -217,8 +247,15 @@
     flex-direction: column;
   }
 
+  .parameterWrapper {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
   .innerWrapper {
     width: 90%;
+    height: 80vh;
     margin-top: 2rem;
     padding: 1rem;
   }
@@ -320,10 +357,11 @@
   .innerWrapper {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     width: 95%;
     padding: 0.5rem 0.25rem;
+    height: 85vh;
   }
 
   .dropdownContentActive {
@@ -340,7 +378,6 @@
   .innerWrapper {
     margin-top: 1rem;
   }
-
   .inputField {
     justify-content: space-between;
   }

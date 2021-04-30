@@ -1,5 +1,7 @@
 import type { FC, ReactElement } from "react";
 import { Fragment, useCallback, useState } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Logo from "../images/monke.png";
 import { ReactComponent as Star } from "../images/star.svg";
 import "./animation.css";
@@ -92,11 +94,20 @@ const Layout: FC = () => {
       <div className={styles.contentContainer}>{content}</div>
       <div className={styles.footer}>
         <Star className={styles.icon} />
-        <p className={styles.linkTitle}>Github:</p>{" "}
+        <p className={styles.linkTitle}>Made by:</p>{" "}
         <a className={styles.link} href="">
-          cakebatterandsprinkles/smart-monke
+          InnerMonke LLC
         </a>
       </div>
+      <ToastContainer
+        autoClose={false}
+        closeOnClick
+        draggable
+        newestOnTop={false}
+        pauseOnFocusLoss
+        position="top-center"
+        rtl={false}
+      />
     </div>
   );
 };
