@@ -42,11 +42,10 @@ const Layout: FC = () => {
         </a>
       </div>
       <ToastContainer
-        autoClose={false}
         closeOnClick
         draggable
         newestOnTop={false}
-        pauseOnFocusLoss
+        pauseOnFocusLoss={false}
         position="top-center"
         rtl={false}
       />

@@ -106,18 +106,20 @@ const Form: FunctionComponent = () => {
               {rentParameters.map((param) => {
                 return (
                   <div className={styles.inputField} key={param.label}>
-                    <label htmlFor={param.name}>{param.label}</label>
-                    {param.tooltipText ? (
-                      <div>
-                        <p data-for={param.name} data-tip="">
-                          ⓘ
-                        </p>
-                        <ReactTooltip
-                          getContent={(): string => param.tooltipText}
-                          id={param.name}
-                        />
-                      </div>
-                    ) : null}
+                    <label htmlFor={param.name}>
+                      {param.label}
+                      {param.tooltipText ? (
+                        <div>
+                          <p className={styles.tooltip} data-for={param.name} data-tip="">
+                            ⓘ
+                          </p>
+                          <ReactTooltip
+                            getContent={(): string => param.tooltipText}
+                            id={param.name}
+                          />
+                        </div>
+                      ) : null}
+                    </label>
                     <NumberFormat
                       decimalScale={2}
                       name={param.name}
@@ -146,18 +148,21 @@ const Form: FunctionComponent = () => {
                   return (
                     <div className={styles.inputWrapper} key={param.label}>
                       <div className={styles.inputField}>
-                        <label htmlFor={param.name}>{param.label}</label>
-                        {param.tooltipText ? (
-                          <div>
-                            <p data-for={param.name} data-tip="">
-                              ⓘ
-                            </p>
-                            <ReactTooltip
-                              getContent={(): string => param.tooltipText}
-                              id={param.name}
-                            />
-                          </div>
-                        ) : null}
+                        <label htmlFor={param.name}>
+                          {param.label}
+
+                          {param.tooltipText ? (
+                            <div>
+                              <p className={styles.tooltip} data-for={param.name} data-tip="">
+                                ⓘ
+                              </p>
+                              <ReactTooltip
+                                getContent={(): string => param.tooltipText}
+                                id={param.name}
+                              />
+                            </div>
+                          ) : null}
+                        </label>
                         <NumberFormat
                           decimalScale={2}
                           name={param.name}

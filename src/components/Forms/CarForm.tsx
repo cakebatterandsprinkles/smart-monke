@@ -2,6 +2,7 @@ import type { FormEvent, FunctionComponent } from "react";
 import { useCallback, useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
 import { toast } from "react-toastify";
+import ReactTooltip from "react-tooltip";
 import { calculateCashCost, calculateLeaseCost, calculateLoanCost } from "../../calculators/car";
 import { cashParameters, leaseParameters, loanParameters } from "../../data/carForm";
 import { ReactComponent as CarIcon } from "../../images/truck.svg";
@@ -123,8 +124,18 @@ const Form: FunctionComponent = () => {
     return (
       <div>
         {cashParameters.map((param) => (
-          <div className={styles.inputField} key={param.name}>
-            <label htmlFor="salesPrice">{param.label}</label>
+          <div className={styles.inputField} key={`cash-${param.name}`}>
+            <label htmlFor="salesPrice">
+              {param.label}
+              {param.tooltipText ? (
+                <div>
+                  <p className={styles.tooltip} data-for={param.name} data-tip="">
+                    ⓘ
+                  </p>
+                  <ReactTooltip getContent={(): string => param.tooltipText} id={param.name} />
+                </div>
+              ) : null}
+            </label>
             <NumberFormat
               decimalScale={2}
               name={param.name}
@@ -149,8 +160,18 @@ const Form: FunctionComponent = () => {
     return (
       <div>
         {loanParameters.map((param) => (
-          <div className={styles.inputField} key={param.name}>
-            <label htmlFor="salesPrice">{param.label}</label>
+          <div className={styles.inputField} key={`loan-${param.name}`}>
+            <label htmlFor="salesPrice">
+              {param.label}
+              {param.tooltipText ? (
+                <div>
+                  <p className={styles.tooltip} data-for={param.name} data-tip="">
+                    ⓘ
+                  </p>
+                  <ReactTooltip getContent={(): string => param.tooltipText} id={param.name} />
+                </div>
+              ) : null}
+            </label>
             <NumberFormat
               decimalScale={2}
               name={param.name}
@@ -210,7 +231,20 @@ const Form: FunctionComponent = () => {
               <p className={styles.mainHeader}>LEASE</p>
               {leaseParameters.map((param) => (
                 <div className={styles.inputField} key={param.name}>
-                  <label htmlFor="salesPrice">{param.label}</label>
+                  <label htmlFor="salesPrice">
+                    {param.label}
+                    {param.tooltipText ? (
+                      <div>
+                        <p className={styles.tooltip} data-for={param.name} data-tip="">
+                          ⓘ
+                        </p>
+                        <ReactTooltip
+                          getContent={(): string => param.tooltipText}
+                          id={param.name}
+                        />
+                      </div>
+                    ) : null}
+                  </label>
                   <NumberFormat
                     decimalScale={2}
                     name={param.name}
@@ -303,7 +337,7 @@ const Form: FunctionComponent = () => {
               <div className={styles.parameterContainer}>
                 {leaseParameters.map((param, index) => (
                   <div className={styles.parameter} key={`${param.name}-${index}`}>
-                    <span className={styles.bold}>{`${param.label}`}</span>
+                    <span className={styles.bold}>{param.label}</span>
                     <span>
                       {param.prefix === "$"
                         ? currencyFormatter.format(leaseFormModel[param.name] ?? 0)
