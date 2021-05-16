@@ -60,28 +60,12 @@ const Form: FunctionComponent = () => {
     const validation =
       paymentMethod === "Cash"
         ? checkErrors(
-            cashFormModel.salesPrice,
-            cashFormModel.salesTax,
-            cashFormModel.upfrontCosts,
-            leaseFormModel.monthlyLeasePrice,
-            leaseFormModel.salesTax,
-            leaseFormModel.leaseDuration,
-            leaseFormModel.residualPrice,
-            leaseFormModel.investmentReturn,
-            leaseFormModel.upfrontPayment,
-            leaseFormModel.taxesAndFees
+            ...Object.values<number | undefined>(cashFormModel),
+            ...Object.values<number | undefined>(leaseFormModel)
           )
         : checkErrors(
-            loanFormModel.monthlyLoanPayment,
-            loanFormModel.salesTax,
-            loanFormModel.loanDuration,
-            loanFormModel.upfrontCosts,
-            leaseFormModel.salesTax,
-            leaseFormModel.leaseDuration,
-            leaseFormModel.residualPrice,
-            leaseFormModel.investmentReturn,
-            leaseFormModel.upfrontPayment,
-            leaseFormModel.taxesAndFees
+            ...Object.values<number | undefined>(loanFormModel),
+            ...Object.values<number | undefined>(leaseFormModel)
           );
 
     validation
@@ -368,6 +352,14 @@ const Form: FunctionComponent = () => {
             <p className={styles.bannerHeading}>To buy or to lease?</p>
           </div>
           {renderContent()}
+
+          <div className={styles.disclaimer}>
+            <strong>DISCLAIMER: </strong>
+            All information on this site is intended for entertainment purposes only. All reasonable
+            efforts have been made to ensure that the accuracy of the content at the time of
+            preparation. Information presented is believed to be reliable but is subject to change
+            at any time, and without notice.
+          </div>
         </div>
       </div>
     </div>

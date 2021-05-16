@@ -2,6 +2,7 @@ import type { FormEvent, FunctionComponent } from "react";
 import { useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
 import { toast } from "react-toastify";
+import ReactTooltip from "react-tooltip";
 import { calculateBuyCost, calculateRentCost } from "../../calculators/house";
 import { buyParameters, rentParameters } from "../../data/houseForm";
 import { ReactComponent as HouseIcon } from "../../images/house.svg";
@@ -60,20 +61,8 @@ const Form: FunctionComponent = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     checkErrors(
-      rentFormModel.monthlyRent,
-      rentFormModel.leaseDuration,
-      rentFormModel.rentersInsurance,
-      rentFormModel.investmentReturn,
-      buyFormModel.salesPrice,
-      buyFormModel.homeInsurance,
-      buyFormModel.propertyTax,
-      buyFormModel.mortgageDuration,
-      buyFormModel.mortgageRate,
-      buyFormModel.downPayment,
-      buyFormModel.hoa,
-      buyFormModel.mortgageInsurance,
-      buyFormModel.upkeepCosts,
-      buyFormModel.closingCosts
+      ...Object.values<number | undefined>(rentFormModel),
+      ...Object.values<number | undefined>(buyFormModel)
     )
       .then(() => {
         setLoader(true);
@@ -118,6 +107,17 @@ const Form: FunctionComponent = () => {
                 return (
                   <div className={styles.inputField} key={param.label}>
                     <label htmlFor={param.name}>{param.label}</label>
+                    {param.tooltipText ? (
+                      <div>
+                        <p data-for={param.name} data-tip="">
+                          ⓘ
+                        </p>
+                        <ReactTooltip
+                          getContent={(): string => param.tooltipText}
+                          id={param.name}
+                        />
+                      </div>
+                    ) : null}
                     <NumberFormat
                       decimalScale={2}
                       name={param.name}
@@ -147,6 +147,17 @@ const Form: FunctionComponent = () => {
                     <div className={styles.inputWrapper} key={param.label}>
                       <div className={styles.inputField}>
                         <label htmlFor={param.name}>{param.label}</label>
+                        {param.tooltipText ? (
+                          <div>
+                            <p data-for={param.name} data-tip="">
+                              ⓘ
+                            </p>
+                            <ReactTooltip
+                              getContent={(): string => param.tooltipText}
+                              id={param.name}
+                            />
+                          </div>
+                        ) : null}
                         <NumberFormat
                           decimalScale={2}
                           name={param.name}
@@ -277,6 +288,14 @@ const Form: FunctionComponent = () => {
             <p className={styles.bannerHeading}>To rent or to buy?</p>
           </div>
           {renderContent()}
+
+          <div className={styles.disclaimer}>
+            <strong>DISCLAIMER: </strong>
+            All information on this site is intended for entertainment purposes only. All reasonable
+            efforts have been made to ensure that the accuracy of the content at the time of
+            preparation. Information presented is believed to be reliable but is subject to change
+            at any time, and without notice.
+          </div>
         </div>
       </div>
     </div>
