@@ -6,8 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Logo from "../../images/monke.png";
 import { ReactComponent as Star } from "../../images/star.svg";
 import "../animation.css";
-import CarForm from "../Forms/CarForm";
-import HouseForm from "../Forms/HouseForm";
+import CarForm from "../forms/car/CarFormLayout";
+import HouseForm from "../forms/house/HouseFormLayout";
 import Landing from "../Landing/Landing";
 import styles from "./Layout.module.css";
 

@@ -93,6 +93,8 @@
   background: url(../../images/jon-flobrant-lRSChvh1Mhs-unsplash.jpg);
   background-repeat: no-repeat;
   background-size: cover;
+  z-index: 1;
+  border-right: 4px solid var(--offwhite);
 }
 
 .right {
@@ -104,14 +106,14 @@
 
 .leftHover.left,
 .rightHover.right {
-  transition: all 0.7s ease-in-out;
-  width: 75%;
+  transition: all 0.5s ease-in-out;
+  width: 60%;
 }
 
 .leftHover.right,
 .rightHover.left {
-  transition: all 0.7s ease-in-out;
-  width: 25%;
+  transition: all 0.5s ease-in-out;
+  width: 40%;
 }
 
 .backgroundContainer {

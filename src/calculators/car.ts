@@ -64,8 +64,12 @@ export const calculateLoanCost = ({
   return total;
 };
 
-type BuyForm = Record<"salesPrice" | "salesTax" | "upfrontCost", number>;
+type BuyForm = Record<"cashSalesTax" | "salesPrice" | "upfrontCashCost", number>;
 
-export const calculateCashCost = ({ salesPrice, salesTax, upfrontCost }: BuyForm): number => {
-  return salesPrice * (1 + salesTax / 100) + upfrontCost;
+export const calculateCashCost = ({
+  salesPrice,
+  cashSalesTax,
+  upfrontCashCost,
+}: BuyForm): number => {
+  return salesPrice * (1 + cashSalesTax / 100) + upfrontCashCost;
 };
